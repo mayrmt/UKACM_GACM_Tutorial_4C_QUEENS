@@ -2,7 +2,7 @@
 
 This tutorial demonstrates the simulation of a fluid/solid interaction (FSI) problem using a monolithic approach. The solid domain is governed by the equations of elastodynamics, whil the flow domain is subject to incompressible Navier-Stokes equations described by an Arbitrary Lagrangean-Euelerian (ALE) observer.
 
-As concrete example, this tutorial studies a pressure wave through an elastic tube. This problem has originally been introduced by Gerbeau and Vidrascu (2003) [^1] and is designed to mimic hemodynamic
+As concrete example, this tutorial studies a pressure wave through an elastic tube. This problem has originally been introduced by Gerbeau and Vidrascu (2003) [1] and is designed to mimic hemodynamic
 conditions, especially w.r.t. to the material densities with the ratio $\rho^S/\rho^F \approx 1$. Nowadays, it is widely considered a benchmark for monolithic solvers in the FSI community.
 
 ## Problem description
@@ -17,7 +17,14 @@ The pressure pulse travels along the longitudinal axis of the tube, causing a tr
 
 ## Model setup in 4C
 
-### Mesh
+To create a 4C model and input file, at least two ingredients are required:
+
+- The finite element mesh in a suitable mesh format
+- A `*.4C.yaml` file will all simulation parameters and boundary conditions
+
+This tutorial comes with ready-to-use mesh files, so that the focus can be put on creating input files for 4C simulations.
+
+### Predefined Mesh Files
 
 This tutorial comes with a series of ready-to-use meshes with different mesh resolutions.
 The following meshes are available (along with recommendation for the number of MPI ranks to run each mesh):
@@ -46,6 +53,62 @@ The mesh contains the following node sets:
 
 Both solid and fluid are meshed with eight-noded hexahedral elements to support a finite element basis with 1st order Lagrange polynomials.
 
+### Creating the 4C input file
+
+You will now create the 4C input file. Therefore, create a new file entitled `pw.4C.yaml`.
+Now, insert the first set of simulation parameters:
+
+- Define the problem type in order to solve a fluid/solid interaction problem:
+
+   ```yaml
+   PROBLEM TYPE:
+     PROBLEMTYPE: "Fluid_Structure_Interaction"
+   ```
+
+- Define the spatial dimension:
+
+   ```yaml
+   PROBLEM SIZE:
+      DIM: 3
+   ```
+
+In order to solve an FSI problem, you now need to define the involved single fields (solid, fluid, ALE mesh motion)
+as well as the interaction among them.
+First, let's define the individual fields:
+
+- Solid:
+
+   ```yaml
+   STRUCTURAL DYNAMIC:
+     INT_STRATEGY: "Old"
+     LINEAR_SOLVER: 1
+   ```
+
+- Define a **fluid** field:
+
+   ```yaml
+   FLUID DYNAMIC:
+     LINEAR_SOLVER: 1
+     TIMEINTEGR: "Np_Gen_Alpha"
+     ALPHA_M: 0.5
+     ALPHA_F: 0.5
+     GAMMA: 0.5
+     NONLINITER: Newton
+     GRIDVEL: BDF2
+   ```
+
+   It performs time integration via the Generalized-alpha scheme [3].
+   The nonlinear problem in each time step is solved by a Newton method.
+   A 2nd-order backward differentiation formula (BDF2) is used to approximate the grid velocity in the ALE description of the Navier-Stokes equations based on the ALE Mesh discplacements.
+
+- The mesh motion problem of the ALE formulation of the fluid domain is defined as follows:
+
+   ```yaml
+     ALE DYNAMIC:
+       ALE_TYPE: springs_material
+       LINEAR_SOLVER: 1
+    ```
+
 ### Boundary conditions
 
 ### Linear solver
@@ -54,11 +117,15 @@ Both solid and fluid are meshed with eight-noded hexahedral elements to support 
 
 #### Iterative solver with algebraic multigrid preconditioning
 
-[^2]
+[2]
 
 ---
 
-[^1] J.-F. Gerbeau and M. Vidrascu. A quasi-Newton algorithm based on a reduced model for fluid-
+[1] J.-F. Gerbeau and M. Vidrascu. A quasi-Newton algorithm based on a reduced model for fluid-
 structure interaction problems in blood flows. ESAIM: Mathematical Modelling and Numerical Analysis (Mod´elisation Math´ematique et Analyse Num´erique), 37(4):631–647, 2003
 
-[^2] M. W. Gee, U. Küttler, and W. A. Wall. Truly monolithic algebraic multigrid for fluid–structure interaction. International Journal for Numerical Methods in Engineering, 85(8):987–1016, 2011
+[2] M. W. Gee, U. Küttler, and W. A. Wall. Truly monolithic algebraic multigrid for fluid–structure interaction. International Journal for Numerical Methods in Engineering, 85(8):987–1016, 2011
+
+[3] K. E. Jansen, C. H. Whiting, and G. M. Hulbert. A generalized-α method for integrating the filtered
+Navier–Stokes equations with a stabilized finite element method. Computer Methods in Applied Mechanics
+and Engineering, 190(3–4):305–319, 2000

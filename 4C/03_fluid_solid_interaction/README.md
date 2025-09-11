@@ -19,6 +19,33 @@ The pressure pulse travels along the longitudinal axis of the tube, causing a tr
 
 ### Mesh
 
+This tutorial comes with a series of ready-to-use meshes with different mesh resolutions.
+The following meshes are available (along with recommendation for the number of MPI ranks to run each mesh):
+
+| Filename  | Global number of DOFs | MPI ranks |
+|-----------|-----------------------|-----------|
+| pw_m1.exo | 8406                  | 1         |
+| pw_m2.exo | 58333                 | 2         |
+| pw_m3.exo | 187516                | 8         |
+
+Each mesh file contains both solid and fluid mesh. See for example the mesh `pw_m2.exo`:
+
+![](fig/pw_m2.png)
+
+The mesh contains the following node sets:
+
+| Node Set ID | Node Set Name           | Description |
+|-------------|-------------------------|-------------|
+| 1           | solid_fsi_surf          | FSI interface of the solid domain |
+| 2           | fluid_fsi_surf          | FSI interface of the fluid domain |
+| 3           | solid_clamp_surf        | Fully constrained solid surfaces at both ends of the tube |
+| 4           | fluid_inflow_surf       | Fluid surface subject to the pressure pulse |
+| 5           | fluid_outflow_surf      | Fluid surface at the other end of the tube |
+| 6           | solid_fsi_no_dbc_curves | Solid nodes at the intersection of Dirichlet boundary and FSI interface |
+| 7           | fluid_fsi_no_dbc_curves | Fluid nodes at the intersection of Dirichlet boundary and FSI interface |
+
+Both solid and fluid are meshed with eight-noded hexahedral elements to support a finite element basis with 1st order Lagrange polynomials.
+
 ### Boundary conditions
 
 ### Linear solver

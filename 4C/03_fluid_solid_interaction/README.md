@@ -97,7 +97,7 @@ First, let's define the individual fields:
      GRIDVEL: BDF2
    ```
 
-   It performs time integration via the Generalized-alpha scheme [3].
+   It performs time integration via the Generalized-alpha scheme [2].
    The nonlinear problem in each time step is solved by a Newton method.
    A 2nd-order backward differentiation formula (BDF2) is used to approximate the grid velocity in the ALE description of the Navier-Stokes equations based on the ALE Mesh discplacements.
 
@@ -113,19 +113,37 @@ First, let's define the individual fields:
 
 ### Linear solver
 
-#### Direct solver
+In this tutorial, we will explore two different solver options for monolithic FSI problesm: direct vs. iterative.
+While direct solvers are easy to use, since they do not require the choice of solver parameters,
+they are often less efficient than properly preconditioned iterarative linear solvers.
 
-#### Iterative solver with algebraic multigrid preconditioning
+First, we prepare the input file by adding two differnt solvers:
 
-[2]
+```yaml
+SOLVER 1:
+  SOLVER: "UMFPACK"
+SOLVER 2:
+  SOLVER: "Belos"
+  AZPREC: "MueLu"
+  AZREUSE: 10
+  SOLVER_XML_FILE: "gmres.xml"
+  MUELU_XML_FILE: "muelu_solid_fluid_ale.xml"
+  NAME: "Fsi_Solver"
+```
+
+Therein, `SOLVER 1` selects a direct solver, `UMFPACK`, while `SOLVER 2` defines an FSI-specific multigrid preconditioner proposed by Gee et al. (2011) [3].
+The additional files `gmres.xml` and `muelu_solid_fluid_ale.xml` are part of this repository.
+For details on the use and defintion of iterative solvers and multigrid preconditions in 4C, we refer to [4C's preconditioning tutorial](https://4c-multiphysics.github.io/4C/documentation/tutorials/tutorial_preconditioning.html).
+
+You can later switch between both the direct and the iterative solver by changing the solver ID in the input parameter `LINEAR_SOLVER` within the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
 
 ---
 
 [1] J.-F. Gerbeau and M. Vidrascu. A quasi-Newton algorithm based on a reduced model for fluid-
 structure interaction problems in blood flows. ESAIM: Mathematical Modelling and Numerical Analysis (Mod´elisation Math´ematique et Analyse Num´erique), 37(4):631–647, 2003
 
-[2] M. W. Gee, U. Küttler, and W. A. Wall. Truly monolithic algebraic multigrid for fluid–structure interaction. International Journal for Numerical Methods in Engineering, 85(8):987–1016, 2011
-
-[3] K. E. Jansen, C. H. Whiting, and G. M. Hulbert. A generalized-α method for integrating the filtered
+[2] K. E. Jansen, C. H. Whiting, and G. M. Hulbert. A generalized-α method for integrating the filtered
 Navier–Stokes equations with a stabilized finite element method. Computer Methods in Applied Mechanics
 and Engineering, 190(3–4):305–319, 2000
+
+[3] M. W. Gee, U. Küttler, and W. A. Wall. Truly monolithic algebraic multigrid for fluid–structure interaction. International Journal for Numerical Methods in Engineering, 85(8):987–1016, 2011

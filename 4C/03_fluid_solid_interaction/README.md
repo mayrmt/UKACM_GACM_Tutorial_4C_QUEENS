@@ -137,13 +137,47 @@ For details on the use and defintion of iterative solvers and multigrid precondi
 
 You can later switch between both the direct and the iterative solver by changing the solver ID in the input parameter `LINEAR_SOLVER` within the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
 
+#### Direct Solver
+
+First, we start with a direct solver. It is defined as follows:
+
+```yaml
+SOLVER 1:
+  SOLVER: "UMFPACK"
+```
+
+This enables `UMFPACK` as direct solver, which will compute an LU factorization of the FSI system matrix and use it to solve the arising linear system of equations.
+
+To tell the FSI algorithm to use this solver, make sure to set assign the value `1` to the input parameter `LINEAR_SOLVER` within the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
+
+#### Iterative Solver
+
+To overcome performance and feasibility limitations of direct solvers, let us now explore iterative solvers with appropriate preconditioning.
+Therefore, define a second solver in the 4C input file by adding:
+
+```yaml
+SOLVER 2:
+  SOLVER: "Belos"
+  AZPREC: "MueLu"
+  AZREUSE: 10
+  SOLVER_XML_FILE: "gmres.xml"
+  MUELU_XML_FILE: "muelu_solid_fluid_ale.xml"
+```
+
+The parameter `SOVLER: "Belos"` enables a Generalized Minimual Residual (GMRES) solver [4] from Trilinos' Belos package [5] as iterative solver, which will approximate the solution of the linear system up to a user-given tolerance. The exact settings of the GMRES method are pre-defined in `gmres.xml`. To accelerate convergence of the GMRES solver, `AZPREC` points 4C to use Trilinos' `MueLu` package as a preconditioner. In this tutorial, we employ a fully coupled algenraic multigrid preconditioner tailored to FSI systems as proposed in [3]. It is defined in `muelu_solid_fluid_ale.xml`. By setting `AZREUSE: 10`, the preconditioner can be reused up to ten times in order to save the cost for preconditioner setup.
+
+> For details on the use and defintion of iterative solvers and multigrid preconditions in 4C, we refer to [4C's preconditioning tutorial](https://4c-multiphysics.github.io/4C/documentation/tutorials/tutorial_preconditioning.html).
+
+To tell the FSI algorithm to use `SOLVER 2`, make sure to set assign the value `2` to the input parameter `LINEAR_SOLVER` within the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
+
 ---
 
-[1] J.-F. Gerbeau and M. Vidrascu. A quasi-Newton algorithm based on a reduced model for fluid-
-structure interaction problems in blood flows. ESAIM: Mathematical Modelling and Numerical Analysis (Mod´elisation Math´ematique et Analyse Num´erique), 37(4):631–647, 2003
+[1] J.-F. Gerbeau and M. Vidrascu. A quasi-Newton algorithm based on a reduced model for fluid-structure interaction problems in blood flows. ESAIM: Mathematical Modelling and Numerical Analysis (Mod´elisation Math´ematique et Analyse Num´erique), 37(4):631–647, 2003
 
-[2] K. E. Jansen, C. H. Whiting, and G. M. Hulbert. A generalized-α method for integrating the filtered
-Navier–Stokes equations with a stabilized finite element method. Computer Methods in Applied Mechanics
-and Engineering, 190(3–4):305–319, 2000
+[2] K. E. Jansen, C. H. Whiting, and G. M. Hulbert. A generalized-α method for integrating the filtered Navier–Stokes equations with a stabilized finite element method. Computer Methods in Applied Mechanics and Engineering, 190(3–4):305–319, 2000
 
 [3] M. W. Gee, U. Küttler, and W. A. Wall. Truly monolithic algebraic multigrid for fluid–structure interaction. International Journal for Numerical Methods in Engineering, 85(8):987–1016, 2011
+
+[4] Y. Saad and M. H. Schultz. GMRES: A Generalized Minimal Residual Algorithm for Solving Nonsymmetric Linear Systems. SIAM Journal on Scientific and Statistical Computing, 7(3):856–869, 1986
+
+[5] E. Bavier, M. Hoemmen, S. Rajamanickam, and H. Thornquist. Amesos2 and Belos: Direct and Iterative Solvers for Large Sparse Linear Systems. Scientific Programming, 20(3):241–255, 2012

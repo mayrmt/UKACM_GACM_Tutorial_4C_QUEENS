@@ -35,7 +35,7 @@ The following meshes are available (along with recommendation for the number of 
 | pw_m2.exo | 58333                 | 2         |
 | pw_m3.exo | 187516                | 8         |
 
-Each mesh file contains both solid and fluid mesh. See for example the mesh `pw_m2.exo`:
+Each mesh file contains both solid and fluid mesh. The mesh for the mesh motion problem will be generated at run time (see [On-the-fly generation of ALE mesh](#on-the-fly-generation-of-ale-mesh)). See for example the mesh `pw_m2.exo`:
 
 ![](fig/pw_m2.png)
 
@@ -180,6 +180,22 @@ MATERIALS:
 Thereby, `MAT: 1` specifies a Newtonian fluid for the fluid domain, while `MAT 2` defines a St.-Venant-Kirchhoff material for the solid domain. Values correspond to the pressure wave example [1].
 
 For details, see the 4C documentation: [Newtonian fluid](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-fluid), [St.-Ventant-Kirchhoff](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-struct-stvenantkirchhoff)
+
+### On-the-fly generation of ALE mesh
+
+Meshes for solid and fluid are part of the pre-defined mesh file. It is common practice to use the fluid mesh also for the mesh motion problem. Thus, it can be created from the fluid mesh at run time.
+
+Therefore, insert the following section into the 4C input file:
+
+```yaml
+CLONING MATERIAL MAP:
+  - SRC_FIELD: "fluid"
+    SRC_MAT: 1
+    TAR_FIELD: "ale"
+    TAR_MAT: 2
+```
+
+It specifies to clone a field. Source and target fields are identified via the IDs of their material. In this case, `SRC_FIELD: "fluid"` with `SRC_MAT: 1` is used as the source field. The cloning operation will generate a target field defined by `TAR_FIELD: "ale"` and will assign it the target material `TAR_MAT: 2`.
 
 ### Boundary conditions
 

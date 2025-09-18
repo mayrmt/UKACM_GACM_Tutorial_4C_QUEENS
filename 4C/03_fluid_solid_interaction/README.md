@@ -24,7 +24,7 @@ To create a 4C model and input file, at least two ingredients are required:
 
 This tutorial comes with ready-to-use mesh files, so that the focus can be put on creating input files for 4C simulations.
 
-### Predefined Mesh Files
+### Predefined mesh files
 
 This tutorial comes with a series of ready-to-use meshes with different mesh resolutions.
 The following meshes are available (along with recommendation for the number of MPI ranks to run each mesh):
@@ -109,6 +109,55 @@ First, let's define the individual fields:
        LINEAR_SOLVER: 1
     ```
 
+We can now define the FSI algorithm. First, we describe the overall FSI procedure by adding the follwing lines to the 4C input file:
+
+```yaml
+FSI DYNAMIC:
+  COUPALGO: "iter_mortar_monolithicfluidsplit"
+  SECONDORDER: true
+  MAXTIME: 0.02
+  TIMESTEP: 0.0001
+  ```
+
+To enable non-matching grids at the FSI interface with Lagrange multiplier unknowns for constraint enforcement being defined on the fluid side of the interface, we specify the coupling algorihtm `COUPALGO` as `"iter_mortar_monolithicfluidsplit"`.
+The setting `SECONDORDER: true` yields a 2nd order conversion between displacements and velocities at the FSI interface.
+We then run the simulation with a `TIMESTEP` of `0.0001` up to a maximum simulation time `MAXTIME` of `0.001`.
+
+> We start with a short simulation to get things up and running. Feel free to switch to an extended `MAXTIME` at a later stage in order to give the pressure wave time to travel through the elastic tube.
+
+For details on the FSI algorithm, see [6,7].
+
+To solve the nonlinear FSI problem with a monolithic approach, insert the following section:
+
+```yaml
+FSI DYNAMIC/MONOLITHIC SOLVER:
+  SHAPEDERIVATIVES: true
+  LINEARBLOCKSOLVER: "LinalgSolver"
+  LINEAR_SOLVER: 2
+  TOL_DIS_RES_L2: 1e-08
+  TOL_DIS_RES_INF: 1e-08
+  TOL_DIS_INC_L2: 1e-08
+  TOL_DIS_INC_INF: 1e-08
+  TOL_FSI_RES_L2: 1e-08
+  TOL_FSI_RES_INF: 1e-08
+  TOL_FSI_INC_L2: 1e-08
+  TOL_FSI_INC_INF: 1e-08
+  TOL_PRE_RES_L2: 1e-08
+  TOL_PRE_RES_INF: 1e-08
+  TOL_PRE_INC_L2: 1e-08
+  TOL_PRE_INC_INF: 1e-08
+  TOL_VEL_RES_L2: 1e-08
+  TOL_VEL_RES_INF: 1e-08
+  TOL_VEL_INC_L2: 1e-08
+  TOL_VEL_INC_INF: 1e-08
+```
+
+Therein, `SHAPEDERIVATIVES: true` includes the linearization of fluid residuals with respect to the mesh deformation into the FSI Jacobian matrix [7].
+The choice of `LINEARBLOCKSOLVER: "LinalgSolver"` instructs the monolithic solution scheme to solver the linear system through 4C's centralized linear solver interface, `LinalgSolver`, and refers to a linear solver with ID `2` (to be defined later) for the concrete parametrization of the linear solver.
+The remaining parameters specify the tolerances for the convergence test of the nonlinear solver, that tests convergence of solid displacements, fluid velocities and pressures, as well as interface quantities separately and each in 2- and inf-norm (see Appendix A.1 of [8] for details).
+
+### Constitutive behavior
+
 ### Boundary conditions
 
 ### Linear solver
@@ -137,7 +186,7 @@ For details on the use and defintion of iterative solvers and multigrid precondi
 
 You can later switch between both the direct and the iterative solver by changing the solver ID in the input parameter `LINEAR_SOLVER` within the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
 
-#### Direct Solver
+#### Direct solver
 
 First, we start with a direct solver. It is defined as follows:
 
@@ -150,7 +199,7 @@ This enables `UMFPACK` as direct solver, which will compute an LU factorization 
 
 To tell the FSI algorithm to use this solver, make sure to set assign the value `1` to the input parameter `LINEAR_SOLVER` within the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
 
-#### Iterative Solver
+#### Iterative solver with preconditioner
 
 To overcome performance and feasibility limitations of direct solvers, let us now explore iterative solvers with appropriate preconditioning.
 Therefore, define a second solver in the 4C input file by adding:
@@ -181,3 +230,9 @@ To tell the FSI algorithm to use `SOLVER 2`, make sure to set assign the value `
 [4] Y. Saad and M. H. Schultz. GMRES: A Generalized Minimal Residual Algorithm for Solving Nonsymmetric Linear Systems. SIAM Journal on Scientific and Statistical Computing, 7(3):856–869, 1986
 
 [5] E. Bavier, M. Hoemmen, S. Rajamanickam, and H. Thornquist. Amesos2 and Belos: Direct and Iterative Solvers for Large Sparse Linear Systems. Scientific Programming, 20(3):241–255, 2012
+
+[6] T. Klöppel, A. Popp, U. Küttler, and W. A. Wall. Fluid–structure interaction for non-conforming interfaces based on a dual mortar formulation. Computer Methods in Applied Mechanics and Engineering, 200(45–46):3111–3126, 2011
+
+[7] M. Mayr, T. Klöppel, W. A. Wall, and M. W. Gee. A Temporal Consistent Monolithic Approach to Fluid–Structure Interaction Enabling Single Field Predictors. SIAM Journal on Scientific Computing, 37(1):B30–B59, 2015
+
+[8] M. Mayr, M. Noll, and M. W. Gee. A hybrid interface preconditioner for monolithic fluid-structure interaction solvers. Advanced Modeling and Simulation in Engineering Sciences, 7:15, 2020

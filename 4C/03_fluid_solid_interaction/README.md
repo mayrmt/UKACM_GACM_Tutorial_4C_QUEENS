@@ -158,6 +158,29 @@ The remaining parameters specify the tolerances for the convergence test of the 
 
 ### Constitutive behavior
 
+So far, we have defined time integration parameters for the involved solid, fluid, and mesh motion field.
+Yet, the constitutive behavior of solid and fluid are still missing.
+
+They are defined as follows:
+
+```yaml
+MATERIALS:
+  - MAT: 1
+    MAT_fluid:
+      DYNVISCOSITY: 0.03
+      DENSITY: 1
+      GAMMA: 1
+  - MAT: 2
+    MAT_Struct_StVenantKirchhoff:
+      YOUNG: 3e+6
+      NUE: 0.3
+      DENS: 1.2
+```
+
+Thereby, `MAT: 1` specifies a Newtonian fluid for the fluid domain, while `MAT 2` defines a St.-Venant-Kirchhoff material for the solid domain. Values correspond to the pressure wave example [1].
+
+For details, see the 4C documentation: [Newtonian fluid](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-fluid), [St.-Ventant-Kirchhoff](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-struct-stvenantkirchhoff)
+
 ### Boundary conditions
 
 ### Linear solver

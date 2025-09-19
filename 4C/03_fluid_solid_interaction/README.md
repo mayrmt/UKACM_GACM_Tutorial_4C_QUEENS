@@ -48,8 +48,8 @@ The mesh contains the following node sets:
 | 3           | solid_clamp_surf        | Fully constrained solid surfaces at both ends of the tube |
 | 4           | fluid_inflow_surf       | Fluid surface subject to the pressure pulse |
 | 5           | fluid_outflow_surf      | Fluid surface at the other end of the tube |
-| 6           | solid_fsi_no_dbc_curves | Solid nodes at the intersection of Dirichlet boundary and FSI interface |
-| 7           | fluid_fsi_no_dbc_curves | Fluid nodes at the intersection of Dirichlet boundary and FSI interface |
+| 6           | solid_fsi_no_dbc_curves | Solid nodes at the intersection of Dirichlet boundary and FSI interface (not relevenat for this tutorial) |
+| 7           | fluid_fsi_no_dbc_curves | Fluid nodes at the intersection of Dirichlet boundary and FSI interface (not relevenat for this tutorial) |
 
 Both solid and fluid are meshed with eight-noded hexahedral elements to support a finite element basis with 1st order Lagrange polynomials.
 

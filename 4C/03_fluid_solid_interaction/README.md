@@ -199,6 +199,59 @@ It specifies to clone a field. Source and target fields are identified via the I
 
 ### Boundary conditions
 
+To apply the required boundary and coupling conditions, we will look at each type of boundary condition separately.
+
+To impose a boundary condition, we need to specify not only its type and values, but also the mesh entities of the degrees of freedom that are subject to his boundary condition. A list of relecant mesh entities is given in the table with all node sets of the [predefined mesh files](#predefined-mesh-files).
+
+#### Essential / Dirichlet boundary conditions
+
+In the pressure wave example, there are only two types of Dirichlet conditions:
+
+- Clamping of the solid tube at both ends
+- Fixation of fluid mesh motion at both ends of the tube
+
+We start with the two end surfaces of the solid tube. They are fully clamped, i.e., all three displacements are constrained to zero at the respective surfaces. This can be achieved by defining a `DESIGN SURF DIRICH CONDITIONS` in the 4C input file:
+
+```yaml
+DESIGN SURF DIRICH CONDITIONS:
+  - E: 3
+    ENTITY_TYPE: node_set_id
+    NUMDOF: 3
+    ONOFF: [1,1,1]
+    VAL: [0,0,0]
+```
+
+Explanation
+
+- `E: 3`: This defines the location of the Dirichlet condition, which refers to the list of node sets: all nodes of the solid end surfaces are stored in node set `3`.
+- `NUMDOF: 3`: The solid field has three degrees of freedom per node.
+- `ONOFF: [1,1,1]`: Activate the Dirichlet boundary condition for each of the degrees of freedom at a node.
+- `VAL: [0,0,0]`: Specify the value of the prescribed discplacament for each of the degrees of freedom at a node.
+
+The ALE mesh motion at the fluid cross section areas at both ends of the tube is constrained via `DESIGN SURF ALE DIRICH CONDITIONS`. Its internal setup is the same as a regular Dirichlet condition (for example such as the one in the solid field), however the addendum of `ALE` is required since the ALE mesh motion field is not defined in the mesh file, but has been created by cloning the fluid discretization. The boundary condition reads:
+
+```yaml
+DESIGN SURF ALE DIRICH CONDITIONS:
+  - E: 4
+    ENTITY_TYPE: node_set_id
+    NUMDOF: 3
+    ONOFF: [1,1,1]
+    VAL: [0,0,0]
+  - E: 5
+    ENTITY_TYPE: node_set_id
+    NUMDOF: 3
+    ONOFF: [1,1,1]
+    VAL: [0,0,0]
+```
+
+Since the fluid cross section areas at both ends of the tube are stored in two different nodes sets (to later on allow to impose the pressure pulse only on one of the surfaces), the ALE Dirichlet boundary condition must be applied for each of the surfaces, this case and in accordance with the mesing details from the [predefined mesh files](#predefined-mesh-files) for `E: 4` and `E: 5`. All other parameters follow the same logic as the Dirichlet boundary condition for the solid field and impose a zero-displacement-condition for all ALE degrees of freedom on the two surfaces.
+
+#### Fluid
+
+#### Mesh motion / ALE
+
+#### FSI coupling
+
 ### Linear solver
 
 In this tutorial, we will explore two different solver options for monolithic FSI problesm: direct vs. iterative.

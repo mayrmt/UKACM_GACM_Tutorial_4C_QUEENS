@@ -266,9 +266,23 @@ DESIGN SURF NEUMANN CONDITIONS:
 - `ONOFF: [0,0,1,0]`: Given the orientation of the tube in the global frame of refernce, the external traction must act in negative z-direction of the velocity degrees of freedom. Due to the internal ordering (x-, y-, z-velocities, pressure) of unknows at each fluid node, the third component is activated by setting `1`, while all other components remain inactive by setting `0`.
 - `VAL: [0,0,-13332,0]`: Following the same argument, only the third component nees to carry an actual value, in this case the value of the traction in negative z-direction.
 
-#### Mesh motion / ALE
+#### FSI coupling condition
 
-#### FSI coupling
+The mesh comes with non-matching grids at the fluid/solid interface. Therefore, we employ a mortar approach to impose the coupling conditions [6,7].
+
+According to the [predefined mesh files](#predefined-mesh-files), the solid side of the interface is stored in node set `1`, while the fluid side of the interface is stored in node set `2`. Both sides need to be defined as FSI coupling partners:
+
+```yaml
+DESIGN FSI COUPLING SURF CONDITIONS:
+  - E: 1
+    ENTITY_TYPE: node_set_id
+    coupling_id: 1
+  - E: 2
+    ENTITY_TYPE: node_set_id
+    coupling_id: 1
+```
+
+Again, `E: 1` and `E: 2` are the IDs with `ENTITY_TYPE: node_set_id` instructing to interpret them as node set IDs. The `coupling_id: 1` assigns both couping surfaces to the FSI interface `1`.
 
 ### Linear solver
 

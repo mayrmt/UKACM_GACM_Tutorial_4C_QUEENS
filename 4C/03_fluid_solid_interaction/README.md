@@ -221,9 +221,10 @@ DESIGN SURF DIRICH CONDITIONS:
     VAL: [0,0,0]
 ```
 
-Explanation
+Explanation:
 
 - `E: 3`: This defines the location of the Dirichlet condition, which refers to the list of node sets: all nodes of the solid end surfaces are stored in node set `3`.
+- `ENTITY_TYPE: node_set_id`: Adds context that the `E: 3` needs to be interpreted as an ID of a node set.
 - `NUMDOF: 3`: The solid field has three degrees of freedom per node.
 - `ONOFF: [1,1,1]`: Activate the Dirichlet boundary condition for each of the degrees of freedom at a node.
 - `VAL: [0,0,0]`: Specify the value of the prescribed discplacament for each of the degrees of freedom at a node.
@@ -246,7 +247,24 @@ DESIGN SURF ALE DIRICH CONDITIONS:
 
 Since the fluid cross section areas at both ends of the tube are stored in two different nodes sets (to later on allow to impose the pressure pulse only on one of the surfaces), the ALE Dirichlet boundary condition must be applied for each of the surfaces, this case and in accordance with the mesing details from the [predefined mesh files](#predefined-mesh-files) for `E: 4` and `E: 5`. All other parameters follow the same logic as the Dirichlet boundary condition for the solid field and impose a zero-displacement-condition for all ALE degrees of freedom on the two surfaces.
 
-#### Fluid
+#### Flux / Neumann boundary conditions
+
+The pressure pulse onto the fluid will be modeled as a Neumann boundary condition. It acts onto the "inflow" surface of the fluid domain. Its definition in the 4C input file reads:
+
+```yaml
+DESIGN SURF NEUMANN CONDITIONS:
+  - E: 4
+    ENTITY_TYPE: node_set_id
+    NUMDOF: 4
+    ONOFF: [0,0,1,0]
+    VAL: [0,0,-13332,0]
+```
+
+- `E: 4`: The inflow surface is one of the two fluid cross sections, see [predefined mesh files](#predefined-mesh-files).
+- `ENTITY_TYPE: node_set_id`: Adds context that the `E: 3` needs to be interpreted as an ID of a node set.
+- `NUMDOF: 4`: The three-dimensional flow problem has four degrees of freedom per node, namely three velocities and one pressure unknown.
+- `ONOFF: [0,0,1,0]`: Given the orientation of the tube in the global frame of refernce, the external traction must act in negative z-direction of the velocity degrees of freedom. Due to the internal ordering (x-, y-, z-velocities, pressure) of unknows at each fluid node, the third component is activated by setting `1`, while all other components remain inactive by setting `0`.
+- `VAL: [0,0,-13332,0]`: Following the same argument, only the third component nees to carry an actual value, in this case the value of the traction in negative z-direction.
 
 #### Mesh motion / ALE
 

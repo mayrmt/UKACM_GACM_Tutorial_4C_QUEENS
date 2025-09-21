@@ -1,9 +1,17 @@
 # Introduction to monolithic fluid/solid interaction in 4C
 
-This tutorial demonstrates the simulation of a fluid/solid interaction (FSI) problem using a monolithic approach. The solid domain is governed by the equations of elastodynamics, whil the flow domain is subject to incompressible Navier-Stokes equations described by an Arbitrary Lagrangean-Euelerian (ALE) observer.
+This tutorial demonstrates the simulation of a fluid/solid interaction (FSI) problem using a monolithic approach. FSI describes the two-way coupled interaction of solid bodies with fluid flow. A detailed introduction to all flavors of FSI is way beyond the scope of this tutorial. To this end, this tutorial focueses on the following scenario: the solid domain is governed by the equations of elastodynamics, while the flow domain is subject to incompressible Navier-Stokes equations described by an Arbitrary Lagrangean-Eulerian (ALE) observer.
 
-As concrete example, this tutorial studies a pressure wave through an elastic tube. This problem has originally been introduced by Gerbeau and Vidrascu (2003) [1] and is designed to mimic hemodynamic
-conditions, especially w.r.t. to the material densities with the ratio $\rho^S/\rho^F \approx 1$. Nowadays, it is widely considered a benchmark for monolithic solvers in the FSI community.
+As concrete example, this tutorial studies a pressure wave through an elastic tube. The tube is clampled at both ends and is fully filled with fluid. Both solid and fluid are initially at rest. As external excitation, a pressure pulse is applied to one of the fluid's boundary cross sections, resulting in a pressure wave traveling along the longitudinal axis of the tube. This also causes a traveling radial expansion of the tube traveling in line with the pressure wave. This problem has originally been introduced by Gerbeau and Vidrascu (2003) [1] and is designed to mimic hemodynamic conditions, especially w.r.t. to the material densities with the ratio $\rho^S/\rho^F \approx 1$. Nowadays, it is widely considered a benchmark for monolithic solvers in the FSI community.
+
+## What you will learn in this tutorial
+
+After completion of this tutorial, you will know
+
+- how to set up an FSI problem in 4C;
+- how to define meshes, materials, and boundary conditions;
+- how to run the simulation with direct and iterative solvers;
+- how to interpret the results (pressure wave propagation in an elastic tube).
 
 ## Problem description
 

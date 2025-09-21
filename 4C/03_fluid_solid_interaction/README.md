@@ -104,10 +104,10 @@ First, let's define the individual fields:
 - The mesh motion problem of the ALE formulation of the fluid domain is defined as follows:
 
    ```yaml
-     ALE DYNAMIC:
-       ALE_TYPE: springs_material
-       LINEAR_SOLVER: 1
-    ```
+   ALE DYNAMIC:
+     ALE_TYPE: springs_material
+     LINEAR_SOLVER: 1
+   ```
 
 We can now define the FSI algorithm. First, we describe the overall FSI procedure by adding the follwing lines to the 4C input file:
 

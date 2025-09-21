@@ -181,7 +181,43 @@ Thereby, `MAT: 1` specifies a Newtonian fluid for the fluid domain, while `MAT 2
 
 For details, see the 4C documentation: [Newtonian fluid](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-fluid), [St.-Ventant-Kirchhoff](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-struct-stvenantkirchhoff)
 
-### On-the-fly generation of ALE mesh
+### Geometry and mesh infomration
+
+#### Solid domain and mesh
+
+The solid geometry and its mesh are pre-defined in mesh files, cf [predefined mesh files](#predefined-mesh-files). To use it in a 4C simulation, the input file needs to refer to the solid mesh as follows:
+
+```yaml
+STRUCTURE GEOMETRY:
+  FILE: "pw_m2.exo"
+  ELEMENT_BLOCKS:
+    - ID: 1
+      SOLID:
+        HEX8:
+          MAT: 2
+          KINEM: nonlinear
+          TECH: eas_full
+```
+
+Therein, `FILE: "pw_m2.exo"` points to the pre-defined mesh file.
+The solid domain is defined as one of the meshes `ELEMENT_BLOCKS`, in this case the block with `ID: 1`. The elements in this block will be finite elements with `ELEMENT_NAME: SOLID` and `ELEMENT_DATA: "MAT 2 KINEM nonlinear TECH eas_full"`.
+
+#### Fluid domain and mesh
+
+Similarly, the fluid geometry and mesh is included via:
+
+```yaml
+FLUID GEOMETRY:
+  FILE: "pw_m2.exo"
+  ELEMENT_BLOCKS:
+    - ID: 2
+      FLUID:
+        HEX8:
+          MAT: 1
+          NA: ALE
+```
+
+#### On-the-fly generation of ALE mesh
 
 Meshes for solid and fluid are part of the pre-defined mesh file. It is common practice to use the fluid mesh also for the mesh motion problem. Thus, it can be created from the fluid mesh at run time.
 

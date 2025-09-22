@@ -412,6 +412,8 @@ To tell the FSI algorithm to use `SOLVER 2`, make sure to assign the value `2` t
 
 ---
 
+## References
+
 **[Bavier2012a]** E. Bavier, M. Hoemmen, S. Rajamanickam, and H. Thornquist. Amesos2 and Belos: Direct and Iterative Solvers for Large Sparse Linear Systems. Scientific Programming, 20(3):241–255, 2012
 
 **[Chung1993a]** J. Chung and G. Hulbert. A Time Integration Algorithm for Structural Dynamics With Improved Numerical Dissipation: The Generalized-Alpha Method. Journal of Applied Mechanics, 60(2):371–375, 1993

@@ -84,6 +84,8 @@ Now, insert the first set of simulation parameters:
       DIM: 3
    ```
 
+### Defining single fields
+
 In order to solve an FSI problem, you now need to define the involved single fields (solid, fluid, ALE mesh motion)
 as well as the interaction among them.
 First, let's define the individual fields:
@@ -118,17 +120,23 @@ First, let's define the individual fields:
      GRIDVEL: BDF2
    ```
 
-   `NONLINITER: Newton` instructs the fluid field to assemble _all_ linearization terms, such that the monolithic FSI scheme can solve the nonlinear problem in each time step with a Newton method using a consistent linearization of all residual terms.
+   Similar to the solid field, a default `LINEAR_SOLVER` must be defined. `NONLINITER: Newton` instructs the fluid field to assemble _all_ linearization terms, such that the monolithic FSI scheme can solve the nonlinear problem in each time step with a Newton method using a consistent linearization of all residual terms.
    A 2nd-order backward differentiation formula (BDF2) is used to approximate the grid velocity in the ALE description of the Navier-Stokes equations based on the ALE Mesh discplacements.
    The fluid field performs time integration via the Generalized-alpha scheme [2] with parameters `ALPHA_M`, `ALPHA_F` and `GAMMA` as given. See the [fluid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#fluid-dynamic) for details and further options.
 
-- The mesh motion problem of the ALE formulation of the fluid domain is defined as follows:
+- Define the **ALE mesh motion** field:
+
+   The mesh motion problem of the ALE formulation of the fluid domain is defined as follows:
 
    ```yaml
    ALE DYNAMIC:
      ALE_TYPE: springs_material
      LINEAR_SOLVER: 1
    ```
+
+   The `ALE_TYPE` specifies the mesh motion algorithm to interpret the mesh as a network of springs. Similar to solid and fluid field, a default `LINEAR_SOLVER` must be defined.
+
+### Defining the FSI coupling interaction
 
 We can now define the FSI algorithm. First, we describe the overall FSI procedure by adding the follwing lines to the 4C input file:
 
@@ -177,7 +185,7 @@ Therein, `SHAPEDERIVATIVES: true` includes the linearization of fluid residuals 
 The choice of `LINEARBLOCKSOLVER: "LinalgSolver"` instructs the monolithic solution scheme to solver the linear system through 4C's centralized linear solver interface, `LinalgSolver`, and refers to a linear solver with ID `2` (to be defined later) for the concrete parametrization of the linear solver.
 The remaining parameters specify the tolerances for the convergence test of the nonlinear solver, that tests convergence of solid displacements, fluid velocities and pressures, as well as interface quantities separately and each in 2- and inf-norm (see Appendix A.1 of [8] for details).
 
-### Constitutive behavior
+### Defining the constitutive behavior of each field
 
 So far, we have defined time integration parameters for the involved solid, fluid, and mesh motion field.
 Yet, the constitutive behavior of solid and fluid are still missing.

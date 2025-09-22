@@ -32,7 +32,7 @@ To create a 4C model and input file, at least two ingredients are required:
 - The finite element mesh in a suitable mesh format
 - A `*.4C.yaml` file will all simulation parameters and boundary conditions
 
-This tutorial comes with ready-to-use mesh files, so that the focus can be put on creating input files for 4C simulations.
+This tutorial comes with ready-to-use mesh files, so that the focus can be put on creating input files for 4C simulations. In the next steps, you will create your own 4C input file with all necessary simulation parameters, material definitions and boundary conditions and link it to existing finite element mesh files.
 
 ### Predefined mesh files
 
@@ -48,6 +48,8 @@ The following meshes are available (along with recommendation for the number of 
 Each mesh file contains both solid and fluid mesh. The mesh for the mesh motion problem will be generated at run time (see [On-the-fly generation of ALE mesh](#on-the-fly-generation-of-ale-mesh)). See for example the mesh `pw_m2.exo`:
 
 ![](fig/pw_m2.png)
+
+The solid domain is colored in green, the fluid domain in yellow. Note the non-matching grids at the fluid/solid interface.
 
 The mesh contains the following node sets:
 
@@ -86,7 +88,9 @@ In order to solve an FSI problem, you now need to define the involved single fie
 as well as the interaction among them.
 First, let's define the individual fields:
 
-- Solid:
+- Define the **solid** field and time integration strategy:
+
+	Core parameters for the solid field and time integration strategy are given in the list `STRUCTURAL DYNAMIC`:
 
    ```yaml
    STRUCTURAL DYNAMIC:
@@ -94,22 +98,29 @@ First, let's define the individual fields:
      LINEAR_SOLVER: 1
    ```
 
-- Define a **fluid** field:
+	The `INT_STRATEGY: "Old"` points the solid field towards the implementation of solid time integation schemes, that is ready for FSI problems.
+   For a field to be fully defined, it field must define a `LINEAR_SOLVER` by referring to a solver section, in this case `1`, that will be defined later.
+   In this tutorial, we rely on the solid's default time integration scheme, Generalized-Alpha time integration with a spectral radius of 1.0. See the [solid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#structural-dynamic) for details and further options.
+
+- Define a **fluid** field and time integration strategy:
+
+   Core parameters for the fluid field and time integration strategy are given in the list `STRUCTURAL DYNAMIC`:
+
 
    ```yaml
    FLUID DYNAMIC:
      LINEAR_SOLVER: 1
+     NONLINITER: Newton
      TIMEINTEGR: "Np_Gen_Alpha"
      ALPHA_M: 0.5
      ALPHA_F: 0.5
      GAMMA: 0.5
-     NONLINITER: Newton
      GRIDVEL: BDF2
    ```
 
-   It performs time integration via the Generalized-alpha scheme [2].
-   The nonlinear problem in each time step is solved by a Newton method.
+   `NONLINITER: Newton` instructs the fluid field to assemble _all_ linearization terms, such that the monolithic FSI scheme can solve the nonlinear problem in each time step with a Newton method using a consistent linearization of all residual terms.
    A 2nd-order backward differentiation formula (BDF2) is used to approximate the grid velocity in the ALE description of the Navier-Stokes equations based on the ALE Mesh discplacements.
+   The fluid field performs time integration via the Generalized-alpha scheme [2] with parameters `ALPHA_M`, `ALPHA_F` and `GAMMA` as given. See the [fluid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#fluid-dynamic) for details and further options.
 
 - The mesh motion problem of the ALE formulation of the fluid domain is defined as follows:
 

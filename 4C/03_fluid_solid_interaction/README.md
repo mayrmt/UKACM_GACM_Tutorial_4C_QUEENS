@@ -2,7 +2,7 @@
 
 This tutorial demonstrates the simulation of a fluid/solid interaction (FSI) problem using a monolithic approach. FSI describes the two-way coupled interaction of solid bodies with fluid flow. A detailed introduction to all flavors of FSI is way beyond the scope of this tutorial. To this end, this tutorial focueses on the following scenario: the solid domain is governed by the equations of elastodynamics, while the flow domain is subject to incompressible Navier-Stokes equations described by an Arbitrary Lagrangean-Eulerian (ALE) observer.
 
-As concrete example, this tutorial studies a pressure wave through an elastic tube. The tube is clampled at both ends and is fully filled with fluid. Both solid and fluid are initially at rest. As external excitation, a pressure pulse is applied to one of the fluid's boundary cross sections, resulting in a pressure wave traveling along the longitudinal axis of the tube. This also causes a traveling radial expansion of the tube traveling in line with the pressure wave. This problem has originally been introduced by Gerbeau and Vidrascu (2003) [1] and is designed to mimic hemodynamic conditions, especially w.r.t. to the material densities with the ratio $\rho^S/\rho^F \approx 1$. Nowadays, it is widely considered a benchmark for monolithic solvers in the FSI community.
+As concrete example, this tutorial studies a pressure wave through an elastic tube. The tube is clampled at both ends and is fully filled with fluid. Both solid and fluid are initially at rest. As external excitation, a pressure pulse is applied to one of the fluid's boundary cross sections, resulting in a pressure wave traveling along the longitudinal axis of the tube. This also causes a traveling radial expansion of the tube traveling in line with the pressure wave. This problem has originally been introduced in [Gerbeau2003a] and is designed to mimic hemodynamic conditions, especially w.r.t. to the material densities with the ratio $\rho^S/\rho^F \approx 1$. Nowadays, it is widely considered a benchmark for monolithic solvers in the FSI community.
 
 ## What you will learn in this tutorial
 
@@ -23,7 +23,7 @@ The pressure pulse travels along the longitudinal axis of the tube, causing a tr
 
 ![](fig/pw.jpg)
 
-A detailed analysis of mesh dependence and time integration schemes as well as a series of snapshots of the solution as well as plots for deisplacement and pressure over time obtained with 4C can be found in the [7,9].
+A detailed analysis of mesh dependence and time integration schemes as well as a series of snapshots of the solution as well as plots for deisplacement and pressure over time obtained with 4C can be found in the [Mayr2015a,Mayr2016a].
 
 ## Model setup in 4C
 
@@ -102,7 +102,7 @@ First, let's define the individual fields:
 
 	The `INT_STRATEGY: "Old"` points the solid field towards the implementation of solid time integation schemes, that is ready for FSI problems.
    For a field to be fully defined, it field must define a `LINEAR_SOLVER` by referring to a solver section, in this case `1`, that will be defined later.
-   In this tutorial, we rely on the solid's default time integration scheme, Generalized-Alpha time integration with a spectral radius of 1.0. See the [solid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#structural-dynamic) for details and further options.
+   In this tutorial, we rely on the solid's default time integration scheme, Generalized-Alpha time integration with a spectral radius of 1.0 [Chung1993a]. See the [solid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#structural-dynamic) for details and further options.
 
 - Define a **fluid** field and time integration strategy:
 
@@ -122,7 +122,7 @@ First, let's define the individual fields:
 
    Similar to the solid field, a default `LINEAR_SOLVER` must be defined. `NONLINITER: Newton` instructs the fluid field to assemble _all_ linearization terms, such that the monolithic FSI scheme can solve the nonlinear problem in each time step with a Newton method using a consistent linearization of all residual terms.
    A 2nd-order backward differentiation formula (BDF2) is used to approximate the grid velocity in the ALE description of the Navier-Stokes equations based on the ALE Mesh discplacements.
-   The fluid field performs time integration via the Generalized-alpha scheme [2] with parameters `ALPHA_M`, `ALPHA_F` and `GAMMA` as given. See the [fluid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#fluid-dynamic) for details and further options.
+   The fluid field performs time integration via the Generalized-alpha scheme [Jansen2000a] with parameters `ALPHA_M`, `ALPHA_F` and `GAMMA` as given. See the [fluid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#fluid-dynamic) for details and further options.
 
 - Define the **ALE mesh motion** field:
 
@@ -156,7 +156,7 @@ We then run the simulation with a `TIMESTEP` of `0.0001` up to a maximum simulat
 
 > We start with a short simulation to get things up and running. Feel free to switch to an extended `MAXTIME` at a later stage in order to give the pressure wave time to travel through the elastic tube.
 
-For details on the FSI algorithm, see [6,7].
+For details on the FSI algorithm, see [Kloeppel2011a,Mayr2015a].
 
 To solve the nonlinear FSI problem with a monolithic approach, insert the following section:
 
@@ -183,9 +183,9 @@ FSI DYNAMIC/MONOLITHIC SOLVER:
   TOL_VEL_INC_INF: 1e-08
 ```
 
-Therein, `SHAPEDERIVATIVES: true` includes the linearization of fluid residuals with respect to the mesh deformation into the FSI Jacobian matrix [7].
+Therein, `SHAPEDERIVATIVES: true` includes the linearization of fluid residuals with respect to the mesh deformation into the FSI Jacobian matrix [Mayr2015a].
 The choice of `LINEARBLOCKSOLVER: "LinalgSolver"` instructs the monolithic solution scheme to solver the linear system through 4C's centralized linear solver interface, `LinalgSolver`, and refers to a linear solver with ID `2` (to be defined later) for the concrete parametrization of the linear solver.
-The remaining parameters specify the tolerances for the convergence test of the nonlinear solver, that tests convergence of solid displacements, fluid velocities and pressures, as well as interface quantities separately and each in 2- and inf-norm (see Appendix A.1 of [8] for details).
+The remaining parameters specify the tolerances for the convergence test of the nonlinear solver, that tests convergence of solid displacements, fluid velocities and pressures, as well as interface quantities separately and each in 2- and inf-norm (see Appendix A.1 of [Mayr2020a] for details).
 
 ### Defining the constitutive behavior of each field
 
@@ -207,7 +207,7 @@ MATERIALS:
       DENS: 1.2
 ```
 
-Thereby, `MAT: 1` specifies a Newtonian fluid for the fluid domain, while `MAT 2` defines a St.-Venant-Kirchhoff material for the solid domain. Values correspond to the pressure wave example [1].
+Thereby, `MAT: 1` specifies a Newtonian fluid for the fluid domain, while `MAT 2` defines a St.-Venant-Kirchhoff material for the solid domain. Values correspond to the pressure wave example [Gerbeau2003a].
 
 For details, see the 4C documentation: [Newtonian fluid](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-fluid), [St.-Ventant-Kirchhoff](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-struct-stvenantkirchhoff)
 
@@ -357,7 +357,7 @@ FUNCT1:
 
 #### FSI coupling condition
 
-The mesh comes with non-matching grids at the fluid/solid interface. Therefore, we employ a mortar approach to impose the coupling conditions [6,7].
+The mesh comes with non-matching grids at the fluid/solid interface. Therefore, we employ a mortar approach to impose the coupling conditions [Kloeppel2011a,Mayr2015a].
 
 According to the [predefined mesh files](#predefined-mesh-files), the solid side of the interface is stored in node set `1`, while the fluid side of the interface is stored in node set `2`. Both sides need to be defined as FSI coupling partners:
 
@@ -393,7 +393,7 @@ SOLVER 2:
   NAME: "Fsi_Solver"
 ```
 
-Therein, `SOLVER 1` selects a direct solver, `UMFPACK`, while `SOLVER 2` defines an FSI-specific multigrid preconditioner proposed by Gee et al. (2011) [3].
+Therein, `SOLVER 1` selects a direct solver, `UMFPACK`, while `SOLVER 2` defines an FSI-specific multigrid preconditioner proposed in [Gee2011a].
 The additional files `gmres.xml` and `muelu_solid_fluid_ale.xml` are part of this repository.
 For details on the use and defintion of iterative solvers and multigrid preconditions in 4C, we refer to [4C's preconditioning tutorial](https://4c-multiphysics.github.io/4C/documentation/tutorials/tutorial_preconditioning.html).
 
@@ -426,7 +426,7 @@ SOLVER 2:
   MUELU_XML_FILE: "muelu_solid_fluid_ale.xml"
 ```
 
-The parameter `SOVLER: "Belos"` enables a Generalized Minimual Residual (GMRES) solver [4] from Trilinos' Belos package [5] as iterative solver, which will approximate the solution of the linear system up to a user-given tolerance. The exact settings of the GMRES method are pre-defined in `gmres.xml`. To accelerate convergence of the GMRES solver, `AZPREC` points 4C to use Trilinos' `MueLu` package as a preconditioner. In this tutorial, we employ a fully coupled algenraic multigrid preconditioner tailored to FSI systems as proposed in [3]. It is defined in `muelu_solid_fluid_ale.xml`. By setting `AZREUSE: 10`, the preconditioner can be reused up to ten times in order to save the cost for preconditioner setup.
+The parameter `SOVLER: "Belos"` enables a Generalized Minimual Residual (GMRES) solver [Saad1986a] from Trilinos' Belos package [Bavier2012a] as iterative solver, which will approximate the solution of the linear system up to a user-given tolerance. The exact settings of the GMRES method are pre-defined in `gmres.xml`. To accelerate convergence of the GMRES solver, `AZPREC` points 4C to use Trilinos' `MueLu` package as a preconditioner. In this tutorial, we employ a fully coupled algenraic multigrid preconditioner tailored to FSI systems as proposed in [Gee2011a]. It is defined in `muelu_solid_fluid_ale.xml`. By setting `AZREUSE: 10`, the preconditioner can be reused up to ten times in order to save the cost for preconditioner setup.
 
 > For details on the use and defintion of iterative solvers and multigrid preconditions in 4C, we refer to [4C's preconditioning tutorial](https://4c-multiphysics.github.io/4C/documentation/tutorials/tutorial_preconditioning.html).
 
@@ -434,20 +434,23 @@ To tell the FSI algorithm to use `SOLVER 2`, make sure to set assign the value `
 
 ---
 
-[1] J.-F. Gerbeau and M. Vidrascu. A quasi-Newton algorithm based on a reduced model for fluid-structure interaction problems in blood flows. ESAIM: Mathematical Modelling and Numerical Analysis (Mod´elisation Math´ematique et Analyse Num´erique), 37(4):631–647, 2003
+**[Bavier2012a]** E. Bavier, M. Hoemmen, S. Rajamanickam, and H. Thornquist. Amesos2 and Belos: Direct and Iterative Solvers for Large Sparse Linear Systems. Scientific Programming, 20(3):241–255, 2012
 
-[2] K. E. Jansen, C. H. Whiting, and G. M. Hulbert. A generalized-α method for integrating the filtered Navier–Stokes equations with a stabilized finite element method. Computer Methods in Applied Mechanics and Engineering, 190(3–4):305–319, 2000
+**[Chung1993a]** J. Chung and G. Hulbert. A Time Integration Algorithm for Structural Dynamics With Improved Numerical Dissipation: The Generalized-Alpha Method. Journal of Applied Mechanics, 60(2):371–375, 1993
 
-[3] M. W. Gee, U. Küttler, and W. A. Wall. Truly monolithic algebraic multigrid for fluid–structure interaction. International Journal for Numerical Methods in Engineering, 85(8):987–1016, 2011
+**[Gee2011a]** M. W. Gee, U. Küttler, and W. A. Wall. Truly monolithic algebraic multigrid for fluid–structure interaction. International Journal for Numerical Methods in Engineering, 85(8):987–1016, 2011
 
-[4] Y. Saad and M. H. Schultz. GMRES: A Generalized Minimal Residual Algorithm for Solving Nonsymmetric Linear Systems. SIAM Journal on Scientific and Statistical Computing, 7(3):856–869, 1986
+**[Gerbeau2003a]** J.-F. Gerbeau and M. Vidrascu. A quasi-Newton algorithm based on a reduced model for fluid-structure interaction problems in blood flows. ESAIM: Mathematical Modelling and Numerical Analysis (Mod´elisation Math´ematique et Analyse Num´erique), 37(4):631–647, 2003
 
-[5] E. Bavier, M. Hoemmen, S. Rajamanickam, and H. Thornquist. Amesos2 and Belos: Direct and Iterative Solvers for Large Sparse Linear Systems. Scientific Programming, 20(3):241–255, 2012
+**[Jansen2000a]** K. E. Jansen, C. H. Whiting, and G. M. Hulbert. A generalized-α method for integrating the filtered Navier–Stokes equations with a stabilized finite element method. Computer Methods in Applied Mechanics and Engineering, 190(3–4):305–319, 2000
 
-[6] T. Klöppel, A. Popp, U. Küttler, and W. A. Wall. Fluid–structure interaction for non-conforming interfaces based on a dual mortar formulation. Computer Methods in Applied Mechanics and Engineering, 200(45–46):3111–3126, 2011
+**[Kloeppel2011a]** T. Klöppel, A. Popp, U. Küttler, and W. A. Wall. Fluid–structure interaction for non-conforming interfaces based on a dual mortar formulation. Computer Methods in Applied Mechanics and Engineering, 200(45–46):3111–3126, 2011
 
-[7] M. Mayr, T. Klöppel, W. A. Wall, and M. W. Gee. A Temporal Consistent Monolithic Approach to Fluid–Structure Interaction Enabling Single Field Predictors. SIAM Journal on Scientific Computing, 37(1):B30–B59, 2015
+**[Mayr2015a]** M. Mayr, T. Klöppel, W. A. Wall, and M. W. Gee. A Temporal Consistent Monolithic Approach to Fluid–Structure Interaction Enabling Single Field Predictors. SIAM Journal on Scientific Computing, 37(1):B30–B59, 2015
 
-[8] M. Mayr, M. Noll, and M. W. Gee. A hybrid interface preconditioner for monolithic fluid-structure interaction solvers. Advanced Modeling and Simulation in Engineering Sciences, 7:15, 2020
+**[Mayr2016a]** M. Mayr. A Monolithic Solver for Fluid-Structure Interaction with Adaptive Time Stepping and a Hybrid Preconditioner. PhD thesis, Technische Universität München, 2016
 
-[9] M. Mayr. A Monolithic Solver for Fluid-Structure Interaction with Adaptive Time Stepping and a Hybrid Preconditioner. PhD thesis, Technische Universität München, 2016
+**[Mayr2020a]** M. Mayr, M. Noll, and M. W. Gee. A hybrid interface preconditioner for monolithic fluid-structure interaction solvers. Advanced Modeling and Simulation in Engineering Sciences, 7:15, 2020
+
+**[Saad1986a]** Y. Saad and M. H. Schultz. GMRES: A Generalized Minimal Residual Algorithm for Solving Nonsymmetric Linear Systems. SIAM Journal on Scientific and Statistical Computing, 7(3):856–869, 1986
+

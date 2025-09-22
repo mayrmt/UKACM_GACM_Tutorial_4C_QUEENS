@@ -375,29 +375,7 @@ Again, `E: 1` and `E: 2` are the IDs with `ENTITY_TYPE: node_set_id` instructing
 
 ### Linear solver
 
-In this tutorial, we will explore two different solver options for monolithic FSI problesm: direct vs. iterative.
-While direct solvers are easy to use, since they do not require the choice of solver parameters,
-they are often less efficient than properly preconditioned iterarative linear solvers.
-
-First, we prepare the input file by adding two differnt solvers:
-
-```yaml
-SOLVER 1:
-  SOLVER: "UMFPACK"
-SOLVER 2:
-  SOLVER: "Belos"
-  AZPREC: "MueLu"
-  AZREUSE: 10
-  SOLVER_XML_FILE: "gmres.xml"
-  MUELU_XML_FILE: "muelu_solid_fluid_ale.xml"
-  NAME: "Fsi_Solver"
-```
-
-Therein, `SOLVER 1` selects a direct solver, `UMFPACK`, while `SOLVER 2` defines an FSI-specific multigrid preconditioner proposed in [Gee2011a].
-The additional files `gmres.xml` and `muelu_solid_fluid_ale.xml` are part of this repository.
-For details on the use and defintion of iterative solvers and multigrid preconditions in 4C, we refer to [4C's preconditioning tutorial](https://4c-multiphysics.github.io/4C/documentation/tutorials/tutorial_preconditioning.html).
-
-You can later switch between both the direct and the iterative solver by changing the solver ID in the input parameter `LINEAR_SOLVER` within the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
+In this tutorial, we will explore two different solver options for monolithic FSI problesm: direct vs. iterative. While direct solvers are easy to use, since they do not require the choice of solver parameters, they are often less efficient than properly preconditioned iterarative linear solvers.
 
 #### Direct solver
 
@@ -408,9 +386,9 @@ SOLVER 1:
   SOLVER: "UMFPACK"
 ```
 
-This enables `UMFPACK` as direct solver, which will compute an LU factorization of the FSI system matrix and use it to solve the arising linear system of equations.
+This enables `UMFPACK` [Davis2004a] as direct solver, which will compute an LU factorization of the FSI system matrix and use it to solve the arising linear system of equations.
 
-To tell the FSI algorithm to use this solver, make sure to set assign the value `1` to the input parameter `LINEAR_SOLVER` within the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
+To tell the FSI algorithm to use this solver, make sure to assign the value `1` to the input parameter `LINEAR_SOLVER` in the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
 
 #### Iterative solver with preconditioner
 
@@ -430,13 +408,15 @@ The parameter `SOVLER: "Belos"` enables a Generalized Minimual Residual (GMRES) 
 
 > For details on the use and defintion of iterative solvers and multigrid preconditions in 4C, we refer to [4C's preconditioning tutorial](https://4c-multiphysics.github.io/4C/documentation/tutorials/tutorial_preconditioning.html).
 
-To tell the FSI algorithm to use `SOLVER 2`, make sure to set assign the value `2` to the input parameter `LINEAR_SOLVER` within the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
+To tell the FSI algorithm to use `SOLVER 2`, make sure to assign the value `2` to the input parameter `LINEAR_SOLVER` in the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
 
 ---
 
 **[Bavier2012a]** E. Bavier, M. Hoemmen, S. Rajamanickam, and H. Thornquist. Amesos2 and Belos: Direct and Iterative Solvers for Large Sparse Linear Systems. Scientific Programming, 20(3):241–255, 2012
 
 **[Chung1993a]** J. Chung and G. Hulbert. A Time Integration Algorithm for Structural Dynamics With Improved Numerical Dissipation: The Generalized-Alpha Method. Journal of Applied Mechanics, 60(2):371–375, 1993
+
+**[Davis2004a]** T. A. Davis. Algorithm 832: UMFPACK V4.3 — an Unsymmetric-pattern Multifrontal Method. ACM Transactions on Mathematical Software, 30(2):196–199, 2004
 
 **[Gee2011a]** M. W. Gee, U. Küttler, and W. A. Wall. Truly monolithic algebraic multigrid for fluid–structure interaction. International Journal for Numerical Methods in Engineering, 85(8):987–1016, 2011
 

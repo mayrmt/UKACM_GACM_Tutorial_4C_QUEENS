@@ -138,7 +138,9 @@ First, let's define the individual fields:
 
 ### Defining the FSI coupling interaction
 
-We can now define the FSI algorithm. First, we describe the overall FSI procedure by adding the follwing lines to the 4C input file:
+We can now define the FSI algorithm. In particular, we have to specify the FSI coupling algorithms, some aspects of time discretization, as well as details on the coupling iterations.
+
+First, we describe the overall FSI procedure by adding the follwing lines to the 4C input file:
 
 ```yaml
 FSI DYNAMIC:
@@ -146,7 +148,7 @@ FSI DYNAMIC:
   SECONDORDER: true
   MAXTIME: 0.02
   TIMESTEP: 0.0001
-  ```
+```
 
 To enable non-matching grids at the FSI interface with Lagrange multiplier unknowns for constraint enforcement being defined on the fluid side of the interface, we specify the coupling algorihtm `COUPALGO` as `"iter_mortar_monolithicfluidsplit"`.
 The setting `SECONDORDER: true` yields a 2nd order conversion between displacements and velocities at the FSI interface.
@@ -187,8 +189,7 @@ The remaining parameters specify the tolerances for the convergence test of the 
 
 ### Defining the constitutive behavior of each field
 
-So far, we have defined time integration parameters for the involved solid, fluid, and mesh motion field.
-Yet, the constitutive behavior of solid and fluid are still missing.
+So far, we have defined time integration parameters for the involved solid, fluid, and mesh motion field. Yet, the constitutive behavior of solid and fluid are still missing.
 
 They are defined as follows:
 
@@ -211,6 +212,10 @@ Thereby, `MAT: 1` specifies a Newtonian fluid for the fluid domain, while `MAT 2
 For details, see the 4C documentation: [Newtonian fluid](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-fluid), [St.-Ventant-Kirchhoff](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-struct-stvenantkirchhoff)
 
 ### Geometry and mesh infomration
+
+Geometry and mesh information are provided in ready-to-use mesh files for this tutorial. A brief introduction to meshes in 4C is given in the [preprocessing documentation](https://4c-multiphysics.github.io/4C/documentation/analysis_guide/preprocessing.html).
+
+> The documentation on preprocessing is currently undergoing changes due to changes to the input format of 4C. In particular, we are adding more mesh formats. Stay tuned!
 
 #### Solid domain and mesh
 

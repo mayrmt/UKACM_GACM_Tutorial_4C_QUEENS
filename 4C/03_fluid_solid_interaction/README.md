@@ -10,7 +10,7 @@ After completion of this tutorial, you will know
 
 - how to set up an FSI problem in 4C;
 - how to define meshes, materials, and boundary conditions;
-- how to run the simulation with direct and iterative solvers;
+- how to solve the arising linear system with direct and iterative solvers;
 - how to interpret the results (pressure wave propagation in an elastic tube).
 
 ## Problem description
@@ -22,6 +22,8 @@ As external excitation, the fluid surface at $z = 0$ is loaded with a surface tr
 The pressure pulse travels along the longitudinal axis of the tube, causing a traveling radial dilation of the tube:
 
 ![](fig/pw.jpg)
+
+A detailed analysis of mesh dependence and time integration schemes as well as a series of snapshots of the solution as well as plots for deisplacement and pressure over time obtained with 4C can be found in the [7,9].
 
 ## Model setup in 4C
 
@@ -423,3 +425,5 @@ To tell the FSI algorithm to use `SOLVER 2`, make sure to set assign the value `
 [7] M. Mayr, T. Klöppel, W. A. Wall, and M. W. Gee. A Temporal Consistent Monolithic Approach to Fluid–Structure Interaction Enabling Single Field Predictors. SIAM Journal on Scientific Computing, 37(1):B30–B59, 2015
 
 [8] M. Mayr, M. Noll, and M. W. Gee. A hybrid interface preconditioner for monolithic fluid-structure interaction solvers. Advanced Modeling and Simulation in Engineering Sciences, 7:15, 2020
+
+[9] M. Mayr. A Monolithic Solver for Fluid-Structure Interaction with Adaptive Time Stepping and a Hybrid Preconditioner. PhD thesis, Technische Universität München, 2016

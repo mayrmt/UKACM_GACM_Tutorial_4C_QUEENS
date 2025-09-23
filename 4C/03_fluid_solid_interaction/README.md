@@ -1,6 +1,6 @@
 # Introduction to monolithic fluid/solid interaction in 4C
 
-This tutorial demonstrates the simulation of a fluid/solid interaction (FSI) problem using a monolithic approach. FSI describes the two-way coupled interaction of solid bodies with fluid flow. A detailed introduction to all flavors of FSI is way beyond the scope of this tutorial. To this end, this tutorial focueses on the following scenario: the solid domain is governed by the equations of elastodynamics, while the flow domain is subject to incompressible Navier-Stokes equations described by an Arbitrary Lagrangean-Eulerian (ALE) observer.
+This tutorial demonstrates the simulation of a fluid/solid interaction (FSI) problem using a monolithic approach. FSI describes the two-way coupled interaction of solid bodies with fluid flow. A detailed introduction to all flavors of FSI is way beyond the scope of this tutorial. To this end, this tutorial focuses on the following scenario: the solid domain is governed by the equations of elastodynamics, while the flow domain is subject to incompressible Navier-Stokes equations described by an Arbitrary Lagrangean-Eulerian (ALE) observer.
 
 As concrete example, this tutorial studies a pressure wave through an elastic tube. The tube is clampled at both ends and is fully filled with fluid. Both solid and fluid are initially at rest. As external excitation, a pressure pulse is applied to one of the fluid's boundary cross sections, resulting in a pressure wave traveling along the longitudinal axis of the tube. This also causes a traveling radial expansion of the tube traveling in line with the pressure wave. This problem has originally been introduced in [Gerbeau2003a] and is designed to mimic hemodynamic conditions, especially w.r.t. to the material densities with the ratio $\rho^S/\rho^F \approx 1$. Nowadays, it is widely considered a benchmark for monolithic solvers in the FSI community.
 
@@ -23,14 +23,14 @@ The pressure pulse travels along the longitudinal axis of the tube, causing a tr
 
 ![](fig/pw.jpg)
 
-A detailed analysis of mesh dependence and time integration schemes as well as a series of snapshots of the solution as well as plots for deisplacement and pressure over time obtained with 4C can be found in the [Mayr2015a,Mayr2016a].
+A detailed analysis of mesh dependence and time integration schemes as well as a series of snapshots of the solution as well as plots for displacement and pressure over time obtained with 4C can be found in [Mayr2015a,Mayr2016a].
 
 ## Model setup in 4C
 
 To create a 4C model and input file, at least two ingredients are required:
 
 - The finite element mesh in a suitable mesh format
-- A `*.4C.yaml` file will all simulation parameters and boundary conditions
+- A `*.4C.yaml` file with all simulation parameters and boundary conditions
 
 This tutorial comes with ready-to-use mesh files, so that the focus can be put on creating input files for 4C simulations. In the next steps, you will create your own 4C input file with all necessary simulation parameters, material definitions and boundary conditions and link it to existing finite element mesh files.
 
@@ -100,13 +100,13 @@ First, let's define the individual fields:
      LINEAR_SOLVER: 1
    ```
 
-	The `INT_STRATEGY: "Old"` points the solid field towards the implementation of solid time integation schemes, that is ready for FSI problems.
-   For a field to be fully defined, it field must define a `LINEAR_SOLVER` by referring to a solver section, in this case `1`, that will be defined later.
+   The `INT_STRATEGY: "Old"` points the solid field towards the implementation of solid time integation schemes, that is ready for FSI problems.
+   For a field to be fully defined, it needs to define a `LINEAR_SOLVER` by referring to a solver section, in this case `1`, that will be defined later.
    In this tutorial, we rely on the solid's default time integration scheme, Generalized-Alpha time integration with a spectral radius of 1.0 [Chung1993a]. See the [solid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#structural-dynamic) for details and further options.
 
 - Define a **fluid** field and time integration strategy:
 
-   Core parameters for the fluid field and time integration strategy are given in the list `STRUCTURAL DYNAMIC`:
+   Core parameters for the fluid field and time integration strategy are given in the list `FLUID DYNAMIC`:
 
 
    ```yaml
@@ -121,7 +121,7 @@ First, let's define the individual fields:
    ```
 
    Similar to the solid field, a default `LINEAR_SOLVER` must be defined. `NONLINITER: Newton` instructs the fluid field to assemble _all_ linearization terms, such that the monolithic FSI scheme can solve the nonlinear problem in each time step with a Newton method using a consistent linearization of all residual terms.
-   A 2nd-order backward differentiation formula (BDF2) is used to approximate the grid velocity in the ALE description of the Navier-Stokes equations based on the ALE Mesh discplacements.
+   A 2nd-order backward differentiation formula (BDF2) is used to approximate the grid velocity in the ALE description of the Navier-Stokes equations based on the ALE Mesh displacements.
    The fluid field performs time integration via the Generalized-alpha scheme [Jansen2000a] with parameters `ALPHA_M`, `ALPHA_F` and `GAMMA` as given. See the [fluid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#fluid-dynamic) for details and further options.
 
 - Define the **ALE mesh motion** field:
@@ -140,7 +140,7 @@ First, let's define the individual fields:
 
 We can now define the FSI algorithm. In particular, we have to specify the FSI coupling algorithms, some aspects of time discretization, as well as details on the coupling iterations.
 
-First, we describe the overall FSI procedure by adding the follwing lines to the 4C input file:
+First, we describe the overall FSI procedure by adding the following lines to the 4C input file:
 
 ```yaml
 FSI DYNAMIC:
@@ -184,7 +184,7 @@ FSI DYNAMIC/MONOLITHIC SOLVER:
 ```
 
 Therein, `SHAPEDERIVATIVES: true` includes the linearization of fluid residuals with respect to the mesh deformation into the FSI Jacobian matrix [Mayr2015a].
-The choice of `LINEARBLOCKSOLVER: "LinalgSolver"` instructs the monolithic solution scheme to solver the linear system through 4C's centralized linear solver interface, `LinalgSolver`, and refers to a linear solver with ID `2` (to be defined later) for the concrete parametrization of the linear solver.
+The choice of `LINEARBLOCKSOLVER: "LinalgSolver"` instructs the monolithic solution scheme to solve the linear system through 4C's centralized linear solver interface, `LinalgSolver`, and refers to a linear solver with ID `2` (to be defined later) for the concrete parametrization of the linear solver.
 The remaining parameters specify the tolerances for the convergence test of the nonlinear solver, that tests convergence of solid displacements, fluid velocities and pressures, as well as interface quantities separately and each in 2- and inf-norm (see Appendix A.1 of [Mayr2020a] for details).
 
 ### Defining the constitutive behavior of each field
@@ -271,7 +271,7 @@ It specifies to clone a field. Source and target fields are identified via the I
 
 To apply the required boundary and coupling conditions, we will look at each type of boundary condition separately.
 
-To impose a boundary condition, we need to specify not only its type and values, but also the mesh entities of the degrees of freedom that are subject to his boundary condition. A list of relecant mesh entities is given in the table with all node sets of the [predefined mesh files](#predefined-mesh-files).
+To impose a boundary condition, we need to specify not only its type and values, but also the mesh entities of the degrees of freedom that are subject to his boundary condition. A list of relevant mesh entities is given in the table with all node sets of the [predefined mesh files](#predefined-mesh-files).
 
 #### Essential / Dirichlet boundary conditions
 
@@ -288,7 +288,7 @@ DESIGN SURF DIRICH CONDITIONS:
     ENTITY_TYPE: node_set_id
     NUMDOF: 3
     ONOFF: [1,1,1]
-    VAL: [0,0,0]
+    VAL: [0.0,0.0,0.0]
     FUNCT: [null,null,null]
 ```
 
@@ -298,7 +298,7 @@ Explanation:
 - `ENTITY_TYPE: node_set_id`: Adds context that the `E: 3` needs to be interpreted as an ID of a node set.
 - `NUMDOF: 3`: The solid field has three degrees of freedom per node.
 - `ONOFF: [1,1,1]`: Activate the Dirichlet boundary condition for each of the degrees of freedom at a node.
-- `VAL: [0,0,0]`: Specify the value of the prescribed discplacament for each of the degrees of freedom at a node.
+- `VAL: [0.0,0.0,0.0]`: Specify the value of the prescribed displacament for each of the degrees of freedom at a node.
 
 The ALE mesh motion at the fluid cross section areas at both ends of the tube is constrained via `DESIGN SURF ALE DIRICH CONDITIONS`. Its internal setup is the same as a regular Dirichlet condition (for example such as the one in the solid field), however the addendum of `ALE` is required since the ALE mesh motion field is not defined in the mesh file, but has been created by cloning the fluid discretization. The boundary condition reads:
 
@@ -308,17 +308,17 @@ DESIGN SURF ALE DIRICH CONDITIONS:
     ENTITY_TYPE: node_set_id
     NUMDOF: 3
     ONOFF: [1,1,1]
-    VAL: [0,0,0]
+    VAL: [0.0,0.0,0.0]
     FUNCT: [null,null,null]
   - E: 5
     ENTITY_TYPE: node_set_id
     NUMDOF: 3
     ONOFF: [1,1,1]
-    VAL: [0,0,0]
+    VAL: [0.0,0.0,0.0]
     FUNCT: [null,null,null]
 ```
 
-Since the fluid cross section areas at both ends of the tube are stored in two different nodes sets (to later on allow to impose the pressure pulse only on one of the surfaces), the ALE Dirichlet boundary condition must be applied for each of the surfaces, this case and in accordance with the mesing details from the [predefined mesh files](#predefined-mesh-files) for `E: 4` and `E: 5`. All other parameters follow the same logic as the Dirichlet boundary condition for the solid field and impose a zero-displacement-condition for all ALE degrees of freedom on the two surfaces.
+Since the fluid cross section areas at both ends of the tube are stored in two different nodes sets (to later on allow to impose the pressure pulse only on one of the surfaces), the ALE Dirichlet boundary condition must be applied for each of the surfaces, this case and in accordance with the mesh details from the [predefined mesh files](#predefined-mesh-files) for `E: 4` and `E: 5`. All other parameters follow the same logic as the Dirichlet boundary condition for the solid field and impose a zero-displacement-condition for all ALE degrees of freedom on the two surfaces.
 
 #### Flux / Neumann boundary conditions
 
@@ -337,7 +337,7 @@ DESIGN SURF NEUMANN CONDITIONS:
 - `E: 4`: The inflow surface is one of the two fluid cross sections, see [predefined mesh files](#predefined-mesh-files).
 - `ENTITY_TYPE: node_set_id`: Adds context that the `E: 3` needs to be interpreted as an ID of a node set.
 - `NUMDOF: 4`: The three-dimensional flow problem has four degrees of freedom per node, namely three velocities and one pressure unknown.
-- `ONOFF: [0,0,1,0]`: Given the orientation of the tube in the global frame of refernce, the external traction must act in negative z-direction of the velocity degrees of freedom. Due to the internal ordering (x-, y-, z-velocities, pressure) of unknows at each fluid node, the third component is activated by setting `1`, while all other components remain inactive by setting `0`.
+- `ONOFF: [0,0,1,0]`: Given the orientation of the tube in the global frame of reference, the external traction must act in negative z-direction of the velocity degrees of freedom. Due to the internal ordering (x-, y-, z-velocities, pressure) of unknows at each fluid node, the third component is activated by setting `1`, while all other components remain inactive by setting `0`.
 - `VAL: [0,0,-13332,0]`: Following the same argument, only the third component nees to carry an actual value, in this case the value of the traction in negative z-direction.
 - `FUNCT: [null,null,1,null]` specifies the (time-dependent) function `FUNCT 1` for the z-component of the external load.
 
@@ -371,7 +371,7 @@ DESIGN FSI COUPLING SURF CONDITIONS:
     coupling_id: 1
 ```
 
-Again, `E: 1` and `E: 2` are the IDs with `ENTITY_TYPE: node_set_id` instructing to interpret them as node set IDs. The `coupling_id: 1` assigns both couping surfaces to the FSI interface `1`.
+Again, `E: 1` and `E: 2` are the IDs with `ENTITY_TYPE: node_set_id` instructing to interpret them as node set IDs. The `coupling_id: 1` assigns both coupling surfaces to the FSI interface `1`.
 
 ### Linear solver
 
@@ -404,7 +404,7 @@ SOLVER 2:
   MUELU_XML_FILE: "muelu_solid_fluid_ale.xml"
 ```
 
-The parameter `SOVLER: "Belos"` enables a Generalized Minimual Residual (GMRES) solver [Saad1986a] from Trilinos' Belos package [Bavier2012a] as iterative solver, which will approximate the solution of the linear system up to a user-given tolerance. The exact settings of the GMRES method are pre-defined in `gmres.xml`. To accelerate convergence of the GMRES solver, `AZPREC` points 4C to use Trilinos' `MueLu` package as a preconditioner. In this tutorial, we employ a fully coupled algenraic multigrid preconditioner tailored to FSI systems as proposed in [Gee2011a]. It is defined in `muelu_solid_fluid_ale.xml`. By setting `AZREUSE: 10`, the preconditioner can be reused up to ten times in order to save the cost for preconditioner setup.
+The parameter `SOVLER: "Belos"` enables a Generalized Minimal Residual (GMRES) solver [Saad1986a] from Trilinos' Belos package [Bavier2012a] as iterative solver, which will approximate the solution of the linear system up to a user-given tolerance. The exact settings of the GMRES method are pre-defined in `gmres.xml`. To accelerate convergence of the GMRES solver, `AZPREC` points 4C to use Trilinos' `MueLu` package as a preconditioner. In this tutorial, we employ a fully coupled algebraic multigrid preconditioner tailored to FSI systems as proposed in [Gee2011a]. It is defined in `muelu_solid_fluid_ale.xml`. By setting `AZREUSE: 10`, the preconditioner can be reused up to ten times in order to save the cost for preconditioner setup.
 
 > For details on the use and defintion of iterative solvers and multigrid preconditions in 4C, we refer to [4C's preconditioning tutorial](https://4c-multiphysics.github.io/4C/documentation/tutorials/tutorial_preconditioning.html).
 
@@ -424,7 +424,7 @@ To run a 4C simulation, you need a compiled 4C executable and 4C input data.
 
 ### Starting a 4C simulation
 
-4C can run in parallel distributed to multiple cores. We denote the number of cores by `<numCores>` thourghout this tutorial.
+4C can run in parallel distributed to multiple cores. We denote the number of cores by `<numCores>` throughout this tutorial.
 
 To write output, the user has to provide an output prefix that is used for all output files. We assume output to be prefixed by `<path/to/output>`.
 

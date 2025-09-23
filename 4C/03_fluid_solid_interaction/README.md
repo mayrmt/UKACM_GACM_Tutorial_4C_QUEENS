@@ -154,7 +154,7 @@ FSI DYNAMIC:
   TIMESTEP: 0.0001
 ```
 
-To enable non-matching grids at the FSI interface with Lagrange multiplier unknowns for constraint enforcement being defined on the fluid side of the interface, we specify the coupling algorihtm `COUPALGO` as `"iter_mortar_monolithicfluidsplit"`.
+To enable non-matching grids at the FSI interface with Lagrange multiplier unknowns for constraint enforcement being discretized on the fluid side of the interface, we specify the coupling algorihtm `COUPALGO` as `"iter_mortar_monolithicfluidsplit"`.
 The setting `SECONDORDER: true` yields a 2nd order conversion between displacements and velocities at the FSI interface.
 We then run the simulation with a `TIMESTEP` of `0.0001` up to a maximum simulation time `MAXTIME` of `0.001`.
 
@@ -275,6 +275,8 @@ CLONING MATERIAL MAP:
 
 It specifies to clone a field. Source and target fields are identified via the IDs of their material. In this case, `SRC_FIELD: "fluid"` with `SRC_MAT: 1` is used as the source field. The cloning operation will generate a target field defined by `TAR_FIELD: "ale"` and will assign it the target material `TAR_MAT: 2`.
 
+Please keep in mind that the actual stiffness value of the ALE field is irrelevant and does not influence the physical solution. Therefore, it is ok to refer to the solid material here for simplicity.
+
 ### Boundary conditions
 
 To apply the required boundary and coupling conditions, we will look at each type of boundary condition separately.
@@ -330,7 +332,7 @@ Since the fluid cross section areas at both ends of the tube are stored in two d
 
 #### Flux / Neumann boundary conditions
 
-The pressure pulse onto the fluid will be modeled as a Neumann boundary condition. It acts onto the "inflow" surface of the fluid domain. Its definition in the 4C input file reads:
+The pressure pulse onto the fluid will be modeled as a Neumann boundary condition. It acts onto on of the cross section surfaces of the fluid domain. Its definition in the 4C input file reads:
 
 ```yaml
 DESIGN SURF NEUMANN CONDITIONS:
@@ -342,7 +344,7 @@ DESIGN SURF NEUMANN CONDITIONS:
     FUNCT: [null,null,1,null]
 ```
 
-- `E: 4`: The inflow surface is one of the two fluid cross sections, see [predefined mesh files](#predefined-mesh-files).
+- `E: 4`: This refers to the node set `4` representing all nodes in one of the two fluid cross sections, see [predefined mesh files](#predefined-mesh-files).
 - `ENTITY_TYPE: node_set_id`: Adds context that the `E: 3` needs to be interpreted as an ID of a node set.
 - `NUMDOF: 4`: The three-dimensional flow problem has four degrees of freedom per node, namely three velocities and one pressure unknown.
 - `ONOFF: [0,0,1,0]`: Given the orientation of the tube in the global frame of reference, the external traction must act in negative z-direction of the velocity degrees of freedom. Due to the internal ordering (x-, y-, z-velocities, pressure) of unknows at each fluid node, the third component is activated by setting `1`, while all other components remain inactive by setting `0`.
@@ -360,8 +362,10 @@ FUNCT1:
     TYPE: "linearinterpolation"
     NUMPOINTS: 4
     TIMES: [0,0.003,0.0031,10000]
-    VALUES: [1,1,0,0]
+    VALUES: [1.0,1.0,0.0,0.0]
 ```
+
+The linear interpolation is defined by specifying `NUMPOINTS: 4` data points at time instances `TIMES: [0,0.003,0.0031,10000]` with assigned values `VALUES: [1.0,1.0,0.0,0.0]`.
 
 #### FSI coupling condition
 

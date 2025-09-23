@@ -102,7 +102,9 @@ First, let's define the individual fields:
 
    The `INT_STRATEGY: "Old"` points the solid field towards the implementation of solid time integation schemes, that is ready for FSI problems.
    For a field to be fully defined, it needs to define a `LINEAR_SOLVER` by referring to a solver section, in this case `1`, that will be defined later.
-   In this tutorial, we rely on the solid's default time integration scheme, Generalized-Alpha time integration with a spectral radius of 1.0 [Chung1993a]. See the [solid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#structural-dynamic) for details and further options.
+   In this tutorial, we rely on the solid's default time integration scheme, Generalized-Alpha time integration with a spectral radius of 1.0 [Chung1993a].
+
+   > **Link to documentation:** See the [solid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#structural-dynamic) for details and further options.
 
 - Define a **fluid** field and time integration strategy:
 
@@ -122,7 +124,9 @@ First, let's define the individual fields:
 
    Similar to the solid field, a default `LINEAR_SOLVER` must be defined. `NONLINITER: Newton` instructs the fluid field to assemble _all_ linearization terms, such that the monolithic FSI scheme can solve the nonlinear problem in each time step with a Newton method using a consistent linearization of all residual terms.
    A 2nd-order backward differentiation formula (BDF2) is used to approximate the grid velocity in the ALE description of the Navier-Stokes equations based on the ALE Mesh displacements.
-   The fluid field performs time integration via the Generalized-alpha scheme [Jansen2000a] with parameters `ALPHA_M`, `ALPHA_F` and `GAMMA` as given. See the [fluid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#fluid-dynamic) for details and further options.
+   The fluid field performs time integration via the Generalized-alpha scheme [Jansen2000a] with parameters `ALPHA_M`, `ALPHA_F` and `GAMMA` as given.
+
+   > **Link to documentation:** See the [fluid time integration documentation](https://4c-multiphysics.github.io/4C/documentation/headerreference.html#fluid-dynamic) for details and further options.
 
 - Define the **ALE mesh motion** field:
 
@@ -209,11 +213,15 @@ MATERIALS:
 
 Thereby, `MAT: 1` specifies a Newtonian fluid for the fluid domain, while `MAT 2` defines a St.-Venant-Kirchhoff material for the solid domain. Values correspond to the pressure wave example [Gerbeau2003a].
 
-For details, see the 4C documentation: [Newtonian fluid](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-fluid), [St.-Ventant-Kirchhoff](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-struct-stvenantkirchhoff)
+> **Link to documentation:** For details, see the 4C documentation: [Newtonian fluid](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-fluid), [St.-Ventant-Kirchhoff](https://4c-multiphysics.github.io/4C/documentation/materialreference.html#mat-struct-stvenantkirchhoff)
 
 ### Geometry and mesh infomration
 
-Geometry and mesh information are provided in ready-to-use mesh files for this tutorial. A brief introduction to meshes in 4C is given in the [preprocessing documentation](https://4c-multiphysics.github.io/4C/documentation/analysis_guide/preprocessing.html).
+Geometry and mesh information are provided in ready-to-use mesh files for this tutorial.
+
+> **Link to documentation:** A brief introduction to meshes in 4C is given in the [preprocessing documentation](https://4c-multiphysics.github.io/4C/documentation/analysis_guide/preprocessing.html).
+
+</br>
 
 > The documentation on preprocessing is currently undergoing changes due to changes to the input format of 4C. In particular, we are adding more mesh formats. Stay tuned!
 
@@ -406,7 +414,11 @@ SOLVER 2:
 
 The parameter `SOVLER: "Belos"` enables a Generalized Minimal Residual (GMRES) solver [Saad1986a] from Trilinos' Belos package [Bavier2012a] as iterative solver, which will approximate the solution of the linear system up to a user-given tolerance. The exact settings of the GMRES method are pre-defined in `gmres.xml`. To accelerate convergence of the GMRES solver, `AZPREC` points 4C to use Trilinos' `MueLu` package as a preconditioner. In this tutorial, we employ a fully coupled algebraic multigrid preconditioner tailored to FSI systems as proposed in [Gee2011a]. It is defined in `muelu_solid_fluid_ale.xml`. By setting `AZREUSE: 10`, the preconditioner can be reused up to ten times in order to save the cost for preconditioner setup.
 
-> For details on the use and defintion of iterative solvers and multigrid preconditions in 4C, we refer to [4C's preconditioning tutorial](https://4c-multiphysics.github.io/4C/documentation/tutorials/tutorial_preconditioning.html).
+> **Note on file locations:** asdf
+
+</br>
+
+> **Link to documentation:** For details on the use and defintion of iterative solvers and multigrid preconditions in 4C, we refer to [4C's preconditioning tutorial](https://4c-multiphysics.github.io/4C/documentation/tutorials/tutorial_preconditioning.html).
 
 To tell the FSI algorithm to use `SOLVER 2`, make sure to assign the value `2` to the input parameter `LINEAR_SOLVER` in the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
 

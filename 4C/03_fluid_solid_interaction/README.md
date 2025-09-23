@@ -438,9 +438,9 @@ With a complete `*.4C.yaml` input file at hand, you are now in the position to r
 
 To run a 4C simulation, you need a compiled 4C executable and 4C input data.
 
-- **Executable:** In this tutorial, you can use the pre-compiled 4C executable provided within the virtual machine for this tutorial. We assume the 4C executable to be located at `<path/to/4C/executable>`. In this tutorial, it is located at: INSERT PATH TO EXECUTABLE HERE!!
+- **Executable:** In this tutorial, you can use the pre-compiled 4C executable provided within the virtual machine for this tutorial. We assume the 4C build directory to be located at `<path/to/build/directory>`. In this tutorial, it is located at: INSERT PATH TO EXECUTABLE HERE!!
 - **4C mesh file:** For this tutorial, please use one of the pre-defined mesh files `pw_m*.exo` as described in the section on [predefined mesh files](#predefined-mesh-files).
-- **4C input file:** For this tutorial, please use the input file `pw.4C.yaml` that you have created in the previous steps, cf. [creating the 4C input file](#creating-the-4C-input-file). We assume the 4C input to be located at `<path/to/4C/input/file>`.
+- **4C input file:** For this tutorial, please use the input file `pw.4C.yaml` that you have created in the previous steps, cf. [creating the 4C input file](#creating-the-4C-input-file). We assume the 4C input to be located at `<path/to/input/file>`.
 
 ### Starting a 4C simulation
 
@@ -451,12 +451,26 @@ To write output, the user has to provide an output prefix that is used for all o
 To run 4C on `<numCores>` cores, execute the following command:
 
 ```bash
-mpirun -np <numCores> <path/to/4C/executable> <path/to/4C/input/file> <path/to/output>
+mpirun -np <numCores> <path/to/build/directory>/4C <path/to/input/file> <path/to/output>
 ```
+
+### Postprocessing
+
+For FSI simulations, 4C writes simulation output in binary format. To view it in ParaView, first run the postprocessing as follows:
+
+```bash
+<path/to/build/directory>/post_ensight --file=<path/to/output>
+```
+
+This will produce a series of files ready for inspection in ParaView.
 
 ## Visualization of results
 
+To look at the simulation results, open the `*.case` files in ParaView.
 
+> **Link to documentation:** Please consult the [ParaView documentation](https://www.paraview.org/resources/) on all questions related to ParaView.
+
+You now should be able to obtain a visualization like the one in the section on [Problem description](#poblem-description).
 
 ---
 

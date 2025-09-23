@@ -410,6 +410,34 @@ The parameter `SOVLER: "Belos"` enables a Generalized Minimual Residual (GMRES) 
 
 To tell the FSI algorithm to use `SOLVER 2`, make sure to assign the value `2` to the input parameter `LINEAR_SOLVER` in the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the 4C input file.
 
+## Running the FSI Simulation
+
+With a complete `*.4C.yaml` input file at hand, you are now in the position to run the simulation.
+
+### Prerequesites
+
+To run a 4C simulation, you need a compiled 4C executable and 4C input data.
+
+- **Executable:** In this tutorial, you can use the pre-compiled 4C executable provided within the virtual machine for this tutorial. We assume the 4C executable to be located at `<path/to/4C/executable>`. In this tutorial, it is located at: INSERT PATH TO EXECUTABLE HERE!!
+- **4C mesh file:** For this tutorial, please use one of the pre-defined mesh files `pw_m*.exo` as described in the section on [predefined mesh files](#predefined-mesh-files).
+- **4C input file:** For this tutorial, please use the input file `pw.4C.yaml` that you have created in the previous steps, cf. [creating the 4C input file](#creating-the-4C-input-file). We assume the 4C input to be located at `<path/to/4C/input/file>`.
+
+### Starting a 4C simulation
+
+4C can run in parallel distributed to multiple cores. We denote the number of cores by `<numCores>` thourghout this tutorial.
+
+To write output, the user has to provide an output prefix that is used for all output files. We assume output to be prefixed by `<path/to/output>`.
+
+To run 4C on `<numCores>` cores, execute the following command:
+
+```bash
+mpirun -np <numCores> <path/to/4C/executable> <path/to/4C/input/file> <path/to/output>
+```
+
+## Visualization of results
+
+
+
 ---
 
 ## References

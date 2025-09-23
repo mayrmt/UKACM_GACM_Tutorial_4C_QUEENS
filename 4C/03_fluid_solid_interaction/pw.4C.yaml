@@ -57,8 +57,6 @@ SOLVER 2:
   SOLVER_XML_FILE: "{{ input_file_gmres }}"
   MUELU_XML_FILE: "{{ input_file_muelu }}"
   NAME: "Fsi_Solver"
-  # flag to make sure that simulation does not end at warning
-  # source: 4C/src/core/linear_solver/src/method/4C_linear_solver_method_input.cpp
   THROW_IF_UNCONVERGED: "false"
 MATERIALS:
   - MAT: 1

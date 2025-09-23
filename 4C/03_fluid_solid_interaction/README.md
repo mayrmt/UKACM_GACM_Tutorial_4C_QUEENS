@@ -414,7 +414,11 @@ SOLVER 2:
 
 The parameter `SOVLER: "Belos"` enables a Generalized Minimal Residual (GMRES) solver [Saad1986a] from Trilinos' Belos package [Bavier2012a] as iterative solver, which will approximate the solution of the linear system up to a user-given tolerance. The exact settings of the GMRES method are pre-defined in `gmres.xml`. To accelerate convergence of the GMRES solver, `AZPREC` points 4C to use Trilinos' `MueLu` package as a preconditioner. In this tutorial, we employ a fully coupled algebraic multigrid preconditioner tailored to FSI systems as proposed in [Gee2011a]. It is defined in `muelu_solid_fluid_ale.xml`. By setting `AZREUSE: 10`, the preconditioner can be reused up to ten times in order to save the cost for preconditioner setup.
 
-> **Note on file locations:** asdf
+> **Note on file locations:** Support files (such as the solver configuration `gmres.xml` or the preconditioner configuration `muelu_solid_fluid_ale.xml` can be placed anywhere, however the 4C input file needs to refer to these files by either relative or absolute paths. In this tutorial, we assume that these files are in the same directory as the 4C input file `pw.4C.yaml`.
+
+</br>
+
+> **Configuration files for solvers and preconditioners:** Since configuration files for solvers and preconditioners can often be reused and are hard to write from scratch, the 4C repository comes with a collection of useful solver and preconditioner configurations. Consult the 4C repository at `tests/input_files/xml/` for solver configurations and exemplary configurations for different types of preconditioners.
 
 </br>
 

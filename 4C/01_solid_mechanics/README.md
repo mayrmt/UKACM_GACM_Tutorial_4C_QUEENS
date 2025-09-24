@@ -4,10 +4,7 @@ A simple tensile test scenario is investigated as an introductory example for us
 
 ## Prerequisites
 
-It is assumed that you use the provided Docker container, or **4C** has been built on your machine according to the instructions, and the tests pass without errors. Furthermore, we expect you to have some visualization tool (ParaView, pyvista, etc.) available to visualize the output files written in VTK format.
-
-> **Note**
-> All these prerequisites are met for the UKACM GACM workshop by setting up the provided virtual machine.
+All prerequisites are met for the UKACM GACM workshop by setting up the provided virtual machine.
 
 ## Introduction
 
@@ -21,17 +18,17 @@ with the measures as listed in the table below
 
 | Quantity | Length in (mm) |
 | --- | --- |
-| $l_1$ | 65.0 |
-| $l_2$ | 50.0 |
-| $w_1$ | 11.34 |
-| $w_2$ | 10.0 |
-| $t$ | 2.0 |
+| $`l_1`$ | 65.0 |
+| $`l_2`$ | 50.0 |
+| $`w_1`$ | 11.34 |
+| $`w_2`$ | 10.0 |
+| $`t`$ | 2.0 |
 
-The material under consideration is an Aluminum alloy with a yield strength of 330 MPa and mild isotropic hardening. During the test, a force F acts on the top of the specimen such that it elongates.
+The material under consideration is an Aluminum alloy with a yield strength of 330 MPa and mild isotropic hardening. During the test, the sample is elongated in the $`y`$-direction and the resulting reaction force is measured.
 
 ## Preprocessing
 
-Due to the symmetry of the problem setup, we may restrict our analysis to one half in the length direction (the $y$-direction of the coordinate system). In addition, symmetry in the width direction (the $x$-direction of the coordinate system) and thickness direction (the $z$-direction of the coordinate system) can be exploited to reduce the investigated size of the model to one eighth of its original size. The resulting geometry is discretized with hexahedral elements with quadratic shape functions (`HEX27`). In this tutorial, three meshes with different levels of fineness are provided to investigate the spatial convergence of the results. They are provided in the Exodus II file format following the name pattern: `tutorial_solid_rect_mesh_<Name>.e`, where `<Name>` needs to be substituted by the names given in the table below. The table presents properties of the different meshes
+Due to the symmetry of the problem setup, we may restrict our analysis to one half in the length direction (the $`y`$-direction of the coordinate system). In addition, symmetry in the width direction (the $`x`$-direction of the coordinate system) and thickness direction (the $`z`$-direction of the coordinate system) can be exploited to reduce the investigated size of the model to one eighth of its original size. The resulting geometry is discretized with hexahedral elements with quadratic shape functions (`HEX27`). In this tutorial, three meshes with different levels of mesh refinement are provided to investigate the spatial convergence of the results. They are provided in the Exodus II file format following the name pattern: `tutorial_solid_rect_mesh_<Name>.e`, where `<Name>` needs to be substituted by the names given in the table below. The table presents properties of the different meshes
 
 | Name | Number of elements | Number of nodes |
 | --- | --- | --- |
@@ -45,11 +42,7 @@ The mesh of the fine discretization used in this tutorial is shown in the figure
 | :--: |
 | *Mesh including symmetry assumptions to reduce the model size. Furthermore, the symmetry and displacement boundary conditions are visualized.* |
 
-Symmetry boundary conditions are applied to the three symmetry planes, denoted with $\text{X}_\text{symm}$, $\text{Y}_\text{symm}$, and $\text{Z}_\text{symm}$ in the figure above. The top surface (`Top`) is subject to a Dirichlet boundary condition with linearly increasing displacement in the positive $y$-direction, as displayed in the figure.
-
-
-> **Note**
-> Strictly speaking, we do not enforce real symmetry boundary conditions, as the derivatives normal to the symmetry plane are not set to zero.
+Symmetry boundary conditions are applied to the three symmetry planes, denoted with $`\text{X}_\text{symm}`$, $`\text{Y}_\text{symm}`$, and $`\text{Z}_\text{symm}`$ in the figure above. The top surface (`Top`) is subject to a Dirichlet boundary condition with linearly increasing displacement in the positive $`y`$-direction, as displayed in the figure.
 
 ## Working with 4C
 
@@ -60,7 +53,7 @@ To simulate the described problem using **4C**, we need to create a valid **4C**
 > **Hint** Use VS Code to open the **4C** input files. VS Code is set up to use the JSON Schema file (`4C_schema.json`) provided by **4C**. This can be very helpful as it enables to display the documentation of the parameters, allows for auto completion, and shows the different options that can be set.  
 > The file ending of the 4C input files is `.4C.yaml`.
 
-> **Hint** The documentation of the [input parameters](https://4c-multiphysics.github.io/4C/documentation/input_parameter_reference/parameterreference.html#input-parameter-reference) available on GitHub can also be very helpful to adapt the input files.
+> **Hint** The documentation of the [input parameters](https://4c-multiphysics.github.io/4C/documentation/input_parameter_reference/parameterreference.html#input-parameter-reference) can also be very helpful to adapt the input files.
 
 The template input file begins with the following lines
 
@@ -99,7 +92,7 @@ STRUCTURAL DYNAMIC:
   LINEAR_SOLVER: 1
 ```
 
-Here, the time integration scheme is set to statics, as we investigate a quasi-static problem setup (`DYNAMICTYPE: Statics`). Furthermore, the base simulation settings consist of 60 time steps spanning from $t_0=0$ s to $t_1=12$ s (`MAXTIME`) with a time step size of $\Delta t=0.2$ s (`TIMESTEP`). Moreover, the tolerance for the L2-norm of the residual (`TOLRES`) and the L2-norm of the displacement increments (`TOLDISP`) is set. Finally, the linear solver is chosen as the solver with ID 1. The solver will be defined later in the file by specifying `SOLVER 1`.
+Here, the time integration scheme is set to statics, as we investigate a quasi-static problem setup (`DYNAMICTYPE: Statics`). Furthermore, the base simulation settings consist of 60 time steps spanning from $`t_0=0`$ s to $`t_1=12`$ s (`MAXTIME`) with a time step size of $`\Delta t=0.2`$ s (`TIMESTEP`). Moreover, the tolerance for the 2-norm of the residual (`TOLRES`) and the 2-norm of the displacement increments (`TOLDISP`) is set. Finally, the linear solver is chosen as the solver with ID 1. The solver will be defined later in the file by specifying `SOLVER 1`.
 
 The next block of input file lines defines how often and what kind of output is written to visualize the results of the simulations.
 
@@ -119,7 +112,7 @@ IO/MONITOR STRUCTURE DBC:
 
 First, it is defined that the stress output should be Cauchy stresses (`STRUCT_STRESS: Cauchy`) and the strain output should be Green-Lagrange strains (`STRUCT_STRAIN: GL`), while `INTERVAL_STEPS: 1` describes the output frequency, i.e., that output in every time step should be performed. Moreover, the settings in `IO/RUNTIME VTK OUTPUT/STRUCTURE` activate the output of the solid mechanics solution and define that the displacement field, the stresses, and the strains should be written to output.
 
-So far, two aspects, namely the linear solver and the material definition, have not been mentioned. These are defined as follows
+The next aspect to be defined is the material definition, which is chosen as follows
 
 ```yaml
 MATERIALS:
@@ -133,6 +126,31 @@ MATERIALS:
       HARDEXPO: 5
       VISC: 0.01
       RATE_DEPENDENCY: 1
+```
+
+Only the material with material ID 1 has been referenced above in the definition of the underlying mesh for the simulation. Thus, only one material needs to be defined which is called `MAT_Struct_PlasticNlnLogNeoHooke`. It is a plasticity model that uses the von Mises yield criterion
+
+```math
+\Phi = \tilde{\mathbf{\tau}} - \sqrt{\frac{2}{3}} \sigma_Y
+```
+
+with $`\tilde{\mathbf{\tau}}`$ being the deviatoric Kirchhoff stress. Additionally, a compressible Neo-Hooke elasticity model is expressed by the free energy. The potential
+
+```math
+\rho_0 \Psi(\mathbf{B}^e) =  \frac{K}{2} \left[ \frac{1}{2} (J^2 - 1) - \ln J \right] + \frac{1}{2} \mu \left[ \text{tr} \mathbf{\tilde{B}}^e - 3 \right]
+```
+
+Here, $`J`$ is the determinant of the deformation gradient $`\mathbf{F}`$, $`\mathbf{B}^e = \mathbf{F}^e {\mathbf{F}^e}^T`$ is the elastic part of the left Cauchy-Green tensor, and $`K, \mu`$ are elastic constants. Plasticity with isotropic hardening is assumed
+
+```math
+\sigma_Y = \sigma_{Y,0} + (\sigma_{Y,\infty} - \sigma_{Y_0}) \left[ 1 - \exp \left( - k \, \varepsilon_p \right) \right]
+```
+
+with $`\sigma_{Y,0}=330, \sigma_{Y,\infty} = 1000, k=5`$. Moreover, a Young's modulus of 70.0e3 and a Poisson's ratio of 0.33 is prescribed. Please note, as we are investigating a quasi-static simulation scenario and the time integration `Statics` is used, dynamic effects and thus the density of the material do not have an effect. It is thus set to an arbitrary value of 1 in this case.
+
+Furthermore, two linear solvers are defined in the template as follows
+
+```yaml
 SOLVER 1:
   SOLVER: Superlu
   NAME: direct_solver
@@ -144,28 +162,9 @@ SOLVER 2:
   NAME: iterative_solver
 ```
 
-Only the material with material ID 1 has been referenced above in the definition of the underlying mesh for the simulation. Thus, only one material needs to be defined which is called `MAT_Struct_PlasticNlnLogNeoHooke`. It is a plasticity model that uses the von Mises yield criterion
+The `SOLVER 1` is the direct solver `Superlu`. In addition, an iterative solver, that usually outperforms direct solvers especially for larger systems, is defined as `SOLVER 2`. However, a proper setup of an iterative solver is more intricate than just defining a direct solver. If you want more information on iterative solvers, please refer to the [respective tutorial](https://4c-multiphysics.github.io/4C/documentation/tutorials/tutorial_preconditioning.html#).
 
-$
-\Phi = \tilde{\mathbf{\tau}} - \sqrt{\frac{2}{3}} \sigma_Y
-$
-
-with $\tilde{\mathbf{\tau}}$ being the deviatoric Kirchhoff stress. Additionally, a compressible Neo-Hooke elasticity model is expressed by the free energy p> **Hint** The otential
-
-$
-\rho_0 \Psi(\mathbf{B}^e) =  \frac{K}{2} \left[ \frac{1}{2} (J^2 - 1) - \ln J \right] + \frac{1}{2} \mu \left[ \text{tr} \mathbf{\tilde{B}}^e - 3 \right]
-$
-
-Here, $J$ is the determinant of the deformation gradient $\mathbf{F}$, $\mathbf{B}^e = \mathbf{F}^e {\mathbf{F}^e}^T$ is the elastic part of the left Cauchy-Green tensor, and $K, \mu$ are elastic constants. Plasticity with isotropic hardening is assumed
-
-$
-\sigma_Y = \sigma_{Y,0} + (\sigma_{Y,\infty} - \sigma_{Y_0}) \left[ 1 - \exp \left( - k \, \varepsilon_p \right) \right]
-$
-
-with $\sigma_{Y,0}=330, \sigma_{Y,\infty} = 1000, k=5$. Moreover, a Young's modulus of 70.0e3 and a Poisson's ratio of 0.33 is prescribed. Please note, as we are investigating a quasi-static simulation scenario and the time integration `Statics` is used, dynamic effects and thus the density of the material do not have an effect. It is thus set to an arbitrary value of 1 in this case.  
-Lastly, two solvers are defined in the template. The `SOLVER 1` is the direct solver `Superlu`. In addition, an iterative solver, that usually outperforms direct solvers especially for larger systems, is defined as `SOLVER 2`. However, a proper setup of an iterative solver is more intricate than just defining a direct solver. If you want more information on iterative solvers, please check out the [respective tutorial](https://4c-multiphysics.github.io/4C/documentation/tutorials/tutorial_preconditioning.html#).
-
-At this stage, everything besides the boundary conditions is defined. This is done using the following lines of the input file:
+At this stage, everything besides the boundary conditions is defined. This is done using the following lines of the input file
 
 ```yaml
 DESIGN SURF DIRICH CONDITIONS:
@@ -198,20 +197,20 @@ FUNCT1:
   - SYMBOLIC_FUNCTION_OF_SPACE_TIME: t
 ```
 
-We briefly describe the definition of the Dirichlet boundary conditions (DBC) applied to the system. The name `DESIGN SURF DIRICH CONDITIONS` already describes that the DBC is applied to the surfaces of the geometry. The component `NUMDOF: 3` defines that there are three degrees of freedom (DOF) per node. Moreover, the component `ONOFF` is a list of values (one for each DOF) that defines whether the DBC is activated for this DOF (1) or not (0). The component `VAL` defines what value is prescribed for the respective DOF. In addition, a functional expression can be prescribed via `FUNCT`. In this case, the prescribed value is calculated based on a multiplication of the evaluated function and the respective constant value in `VAL`.
+We briefly describe the definition of the Dirichlet boundary conditions (DBC) applied to the system. The name `DESIGN SURF DIRICH CONDITIONS` already describes that the DBC is applied to the surfaces of the geometry. The component `NUMDOF: 3` defines that there are three degrees of freedom (DOF) per node. Moreover, the component `ONOFF` is a list of values (one for each DOF) that defines whether the DBC is activated for this DOF (1) or not (0). The component `VAL` defines what value is prescribed for the respective DOF. In addition, a functional expression can be prescribed via `FUNCT`. In this case, the prescribed value is calculated based on a multiplication of the evaluated function and the respective constant value in `VAL`. Moreover, for the last DBC, the parameter `TAG: monitor_reaction` is set, which results in tracking the reaction force at that surface.
 
-In the above section, four DBCs are defined. The following table lists which entity ID (`E`) belongs to which surface defined in the mesh, as displayed in the picture above:
+In the above section, four DBCs are defined. The following table lists which entity ID (`E`) belongs to which surface defined in the mesh, as displayed in the picture above
 
 | Entity ID (`E`) | Surface |
 | --- | --- |
-| 1 | $\text{Y}_\text{symm}$ |
-| 2 | $\text{Z}_\text{symm}$ |
-| 3 | $\text{X}_\text{symm}$ |
+| 1 | $`\text{Y}_\text{symm}`$ |
+| 2 | $`\text{Z}_\text{symm}`$ |
+| 3 | $`\text{X}_\text{symm}`$ |
 | 4 | Top |
 
-So for the DBC applied to the nodes of the `Top` surface the following values are prescribed in positive $y$-direction
+So for the DBC applied to the nodes of the `Top` surface the following values are prescribed in positive $`y`$-direction
 
-$1*t$
+$`1*t`$
 
 originating from the components of (`VAL`*`FUNCT1`).
 
@@ -221,7 +220,7 @@ originating from the components of (`VAL`*`FUNCT1`).
 
 | ![](nodes-y-symm.png) |
 | :--: |
-| *Nodes that are part of the node set of the `ysymm` surface visualized in ParaView.* |
+| *Nodes that are part of the node set of the `ysymm` surface visualized by green spheres in ParaView.* |
 
 ### Execute a 4C simulation
 
@@ -258,11 +257,11 @@ When opening the result data with e.g. ParaView, the following steps are necessa
 1. The filter `Warp By Vector` needs to be applied to display the specimen in the deformed configuration. Filters &rarr; Alphabetical &rarr; Warp By Vector
 1. Different quantities like the displacement field can be chosen from a dropdown menu, and further filters, e.g., to extract specific parts of the complete specimen, or plot certain quantities, can be applied.
 
-As an example the figure below shows the displacement in $x$-direction at the last simulated time step for the mesh with the finest mesh resolution.
+As an example the figure below shows the displacement in $`x`$-direction at the last simulated time step for the mesh with the finest mesh resolution.
 
 | ![](displacement-fine-mesh-last-TS.png) |
 | :--: |
-| *Deformed mesh at the last time step with contours of the displacement in $x$-direction.* |
+| *Deformed mesh at the last time step with contours of the displacement in $`x`$-direction.* |
 
 Furthermore, a csv file containing the reaction force of the DBC assigned to the `Top` surface is written. For visualizing the reaction force over time ,e.g., a simple python script can be used to obtain:
 
@@ -298,7 +297,7 @@ plt.show()
 ## Numerical analyses
 
 ### Step 1
-We first want to analyze the influence of the chosen solver. In the template **4C** input file two solvers have been prepared:
+We first want to analyze the influence of the chosen solver. In the template **4C** input file two solvers have been prepared
 1. `SOLVER 1`: direct solver
 1. `SOLVER 2`: iterative solver
 
@@ -317,7 +316,7 @@ First, the influence of the solvers on the runtime of the simulations is compare
 <details>
 <summary>Solution</summary>
 
-To change the used solver from the direct solver to the iterative solver only the definition of the `LINEAR_SOLVER` in the `STRUCTURAL DYNAMIC` section needs to be changed from `1` to `2`, see below:
+To change the used solver from the direct solver to the iterative solver only the definition of the `LINEAR_SOLVER` in the `STRUCTURAL DYNAMIC` section needs to be changed from `1` to `2`, see below
 
 ```yaml
 STRUCTURAL DYNAMIC:
@@ -358,7 +357,7 @@ The plot shows no significant changes in the progression of the reaction force o
 </details>
 
 ### Step 2.2
-To analyze whether temporal convergence concerning the progression of the reaction force at the DBC over time has already been achieved, three different time step sizes are suggested to keep the investigation in a manageable time frame. Thus, the suggested time step sizes for the analysis are: $0.2$ s (value from the template), $0.15$ s, and $0.075$ s.
+To analyze whether temporal convergence concerning the progression of the reaction force at the DBC over time has already been achieved, three different time step sizes are suggested to keep the investigation in a manageable time frame. Thus, the suggested time step sizes for the analysis are: $`0.2`$ s (value from the template), $`0.15`$ s, and $`0.075`$ s.
 
 <details>
 <summary>Solution</summary>

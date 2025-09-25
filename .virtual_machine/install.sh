@@ -33,6 +33,8 @@ sudo apt-get install -y \
       libomp-dev \
       libvtk9-dev
 
+sudo apt autoremove
+
 sudo rm -rf /var/lib/apt/lists/*
 
 cmake/install.sh

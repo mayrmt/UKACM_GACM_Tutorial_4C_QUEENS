@@ -37,6 +37,7 @@ sudo apt autoremove
 
 sudo rm -rf /var/lib/apt/lists/*
 
+NPROC=8
 INSTALL_DIR='/home/participant/opt/4C-dependencies'
 mkdir -p ${INSTALL_DIR}
 

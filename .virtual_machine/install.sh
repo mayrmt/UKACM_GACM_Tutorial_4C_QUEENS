@@ -37,8 +37,8 @@ sudo apt autoremove
 
 sudo rm -rf /var/lib/apt/lists/*
 
-cmake/install.sh
-qhull/install.sh
-suitesparse/install.sh
-superlu_dist/install.sh
-trilinos/install.sh
+source cmake/install.sh
+source qhull/install.sh
+source suitesparse/install.sh
+source superlu_dist/install.sh
+source trilinos/install.sh

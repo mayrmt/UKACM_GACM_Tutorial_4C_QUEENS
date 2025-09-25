@@ -37,8 +37,10 @@ sudo apt autoremove
 
 sudo rm -rf /var/lib/apt/lists/*
 
-source cmake/install.sh
-source qhull/install.sh
-source suitesparse/install.sh
-source superlu_dist/install.sh
-source trilinos/install.sh
+INSTALL_DIR='~/opt/'
+
+source cmake/install.sh ${INSTALL_DIR}
+source qhull/install.sh ${INSTALL_DIR}
+source suitesparse/install.sh ${INSTALL_DIR}
+source superlu_dist/install.sh ${INSTALL_DIR}
+source trilinos/install.sh ${INSTALL_DIR}

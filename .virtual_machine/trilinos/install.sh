@@ -14,8 +14,8 @@
 set -e
 
 INSTALL_DIR="$1"
-# Number of procs for building (default 4)
-NPROCS=${NPROCS:=4}
+# Number of procs for building (default 8)
+NPROCS=${NPROCS:=8}
 # git sha from Trilinos repository:
 VERSION="06db4c850654feacabdaed61ee8308219266b6a5"
 #CHECKSUM=""

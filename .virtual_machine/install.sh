@@ -37,9 +37,9 @@ sudo apt autoremove
 
 sudo rm -rf /var/lib/apt/lists/*
 
-INSTALL_DIR='~/opt/'
+INSTALL_DIR='/home/participant/opt/4C-dependencies'
 
-source cmake/install.sh ${INSTALL_DIR}
+source cmake/install.sh /usr/local
 source qhull/install.sh ${INSTALL_DIR}
 source suitesparse/install.sh ${INSTALL_DIR}
 source superlu_dist/install.sh ${INSTALL_DIR}

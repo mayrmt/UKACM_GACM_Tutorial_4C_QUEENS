@@ -59,8 +59,6 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-need_root
-
 if [[ -z "$DEPENDENCIES_PATH" ]]; then
   err "You must provide --dependencies-path pointing to your 'dependencies' directory."
   usage
@@ -94,7 +92,7 @@ update-locale LANG="${LANG}" LC_ALL="${LC_ALL}"
 # Core packages 
 # -------------------------------
 log "Installing base development packages"
-apt-get install -y --no-install-recommends \
+sudo apt-get install -y --no-install-recommends \
   build-essential \
   ffmpeg \
   git \
@@ -106,8 +104,8 @@ apt-get install -y --no-install-recommends \
   wget
 
 log "Installing extended dependencies (dev libs, tools)"
-apt-get update
-apt-get install -y --no-install-recommends \
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends \
   doxygen \
   graphviz \
   texinfo \

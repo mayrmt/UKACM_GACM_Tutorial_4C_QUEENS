@@ -19,12 +19,6 @@ DEPENDENCIES_PATH=""
 # -------------------------------
 log() { printf "\n\033[1;32m[4C setup]\033[0m %s\n" "$*"; }
 err() { printf "\n\033[1;31m[4C setup ERROR]\033[0m %s\n" "$*" >&2; }
-need_root() {
-  if [[ "$(id -u)" -ne 0 ]]; then
-    err "Please run as root (use sudo)."
-    exit 1
-  fi
-}
 
 usage() {
   cat <<EOF

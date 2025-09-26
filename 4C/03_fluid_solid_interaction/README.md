@@ -150,7 +150,7 @@ First, we describe the overall FSI procedure by adding the following lines to th
 FSI DYNAMIC:
   COUPALGO: "iter_mortar_monolithicfluidsplit"
   SECONDORDER: true
-  MAXTIME: 0.02
+  MAXTIME: 0.0005
   TIMESTEP: 0.0001
 ```
 
@@ -168,23 +168,23 @@ To solve the nonlinear FSI problem with a monolithic approach, insert the follow
 FSI DYNAMIC/MONOLITHIC SOLVER:
   SHAPEDERIVATIVES: true
   LINEARBLOCKSOLVER: "LinalgSolver"
-  LINEAR_SOLVER: 2
-  TOL_DIS_RES_L2: 1e-08
-  TOL_DIS_RES_INF: 1e-08
-  TOL_DIS_INC_L2: 1e-08
-  TOL_DIS_INC_INF: 1e-08
-  TOL_FSI_RES_L2: 1e-08
-  TOL_FSI_RES_INF: 1e-08
-  TOL_FSI_INC_L2: 1e-08
-  TOL_FSI_INC_INF: 1e-08
-  TOL_PRE_RES_L2: 1e-08
-  TOL_PRE_RES_INF: 1e-08
-  TOL_PRE_INC_L2: 1e-08
-  TOL_PRE_INC_INF: 1e-08
-  TOL_VEL_RES_L2: 1e-08
-  TOL_VEL_RES_INF: 1e-08
-  TOL_VEL_INC_L2: 1e-08
-  TOL_VEL_INC_INF: 1e-08
+  LINEAR_SOLVER: 1
+  TOL_DIS_RES_L2: 1e-06
+  TOL_DIS_RES_INF: 1e-06
+  TOL_DIS_INC_L2: 1e-06
+  TOL_DIS_INC_INF: 1e-06
+  TOL_FSI_RES_L2: 1e-06
+  TOL_FSI_RES_INF: 1e-06
+  TOL_FSI_INC_L2: 1e-06
+  TOL_FSI_INC_INF: 1e-06
+  TOL_PRE_RES_L2: 1e-06
+  TOL_PRE_RES_INF: 1e-06
+  TOL_PRE_INC_L2: 1e-06
+  TOL_PRE_INC_INF: 1e-06
+  TOL_VEL_RES_L2: 1e-06
+  TOL_VEL_RES_INF: 1e-06
+  TOL_VEL_INC_L2: 1e-06
+  TOL_VEL_INC_INF: 1e-06
 ```
 
 Therein, `SHAPEDERIVATIVES: true` includes the linearization of fluid residuals with respect to the mesh deformation into the FSI Jacobian matrix [Mayr2015a].
@@ -356,9 +356,9 @@ The pressure pulse will be imposed as a peak at the beginning of the simulation.
 ```yaml
 FUNCT1:
   - COMPONENT: 0
-    SYMBOLIC_FUNCTION_OF_SPACE_TIME: "initial pressure pulse"
+    SYMBOLIC_FUNCTION_OF_SPACE_TIME: "initial_pressure_pulse"
   - VARIABLE: 0
-    NAME: "initial pressure pulse"
+    NAME: "initial_pressure_pulse"
     TYPE: "linearinterpolation"
     NUMPOINTS: 4
     TIMES: [0,0.003,0.0031,10000]

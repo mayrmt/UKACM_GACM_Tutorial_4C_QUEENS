@@ -13,7 +13,7 @@ After completion of this tutorial, you will know
 - how to solve the arising linear system with direct and iterative solvers;
 - how to interpret the results (pressure wave propagation in an elastic tube).
 
-Therefore, the tutorial will guide you through the process of creating a 4C input file from scratch. For comparison, a working input file `solution.4C.yaml` is part of this tutorial, though it is highly recommended to only consult it in case of severe difficutlties.
+Therefore, the tutorial will guide you through the process of creating a 4C input file from scratch. For comparison, a working input file `fluid_solid_interaction.4C.yaml` is part of this tutorial, though it is highly recommended to only consult it in case of severe difficulties.
 
 ## Problem description
 

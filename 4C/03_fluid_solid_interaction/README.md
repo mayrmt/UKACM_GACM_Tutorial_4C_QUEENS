@@ -842,6 +842,12 @@ The speed of the simulation increases.
 
 </details>
 
+### Step 3: Run more time steps
+
+So far, only five time steps have been simulated. To extend the simulated time and let the pressure wave travel further along the tube's longitudinal axis, increase the `MAXTIME` in the `FSI DYNAMIC` section.
+
+> Hint: Depending on the performance of your machine, it might be useful to switch back to a coarser mesh to keep the computational time at bay.
+
 ---
 
 ## References

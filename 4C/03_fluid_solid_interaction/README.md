@@ -2,7 +2,7 @@
 
 This tutorial demonstrates the simulation of a fluid/solid interaction (FSI) problem using a monolithic approach. FSI describes the two-way coupled interaction of solid bodies with fluid flow. A detailed introduction to all flavors of FSI is way beyond the scope of this tutorial. To this end, this tutorial focuses on the following scenario: the solid domain is governed by the equations of elastodynamics, while the flow domain is subject to incompressible Navier-Stokes equations described by an Arbitrary Lagrangean-Eulerian (ALE) observer.
 
-As concrete example, this tutorial studies a pressure wave through an elastic tube. The tube is clampled at both ends and is fully filled with fluid. Both solid and fluid are initially at rest. As external excitation, a pressure pulse is applied to one of the fluid's boundary cross sections, resulting in a pressure wave traveling along the longitudinal axis of the tube. This also causes a traveling radial expansion of the tube traveling in line with the pressure wave. This problem has originally been introduced in [Gerbeau2003a] and is designed to mimic hemodynamic conditions, especially w.r.t. to the material densities with the ratio $\rho^S/\rho^F \approx 1$. Nowadays, it is widely considered a benchmark for monolithic solvers in the FSI community.
+As concrete example, this tutorial studies a pressure wave through an elastic tube. The tube is clampled at both ends and is fully filled with fluid. Both solid and fluid are initially at rest. As external excitation, a pressure pulse is applied to one of the fluid's boundary cross sections, resulting in a pressure wave traveling along the longitudinal axis of the tube. This also causes a traveling radial expansion of the tube traveling in line with the pressure wave. This problem has originally been introduced in [Gerbeau2003a] and is designed to mimic hemodynamic conditions, especially w.r.t. to the material densities with the ratio $`\rho^S/\rho^F \approx 1`$. Nowadays, it is widely considered a benchmark for monolithic solvers in the FSI community.
 
 ## What you will learn in this tutorial
 
@@ -17,9 +17,9 @@ Therefore, the tutorial will guide you through the process of creating a 4C inpu
 
 ## Problem description
 
-The system consists of a straight, thin-walled solid tube (length $\ell = 5 cm$, outer radius $r_o = 0.6 cm$, inner radius $r_i = 0.5 cm$) that is filled with fluid. The solid tube is fully clamped at both ends. Both solid and fluid are initially at rest.
+The system consists of a straight, thin-walled solid tube (length $`\ell = 5 cm`$, outer radius $`r_o = 0.6 cm`$, inner radius $`r_i = 0.5 cm`$) that is filled with fluid. The solid tube is fully clamped at both ends. Both solid and fluid are initially at rest.
 
-As external excitation, the fluid surface at $z = 0$ is loaded with a surface traction $h^F = 1.3332\cdot 10^4 g\cdot cm/s^2$ in $z$-direction for the duration of $3\cdot 10^{−3} s$. The fluid velocities at $z=\ell$ are prescribed to zero, essentially closing the tube at the far end.
+As external excitation, the fluid surface at $`z = 0`$ is loaded with a surface traction $`h^F = 1.3332\cdot 10^4 g\cdot cm/s^2`$ in $`z`$-direction for the duration of $`3\cdot 10^{−3} s`$.
 
 The pressure pulse travels along the longitudinal axis of the tube, causing a traveling radial dilation of the tube:
 

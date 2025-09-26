@@ -10,7 +10,7 @@ However, if you prefer to use a docker container instead of the virtual machine,
 you may do so, but no support will be provided on how to install and use docker.
 Some information is given [below](#docker).
 
-The VM applicance is a virtual Ubuntu 24.04 system with 4C and a few other software packages preinstalled. 
+The VM applicance is a virtual Ubuntu 24.04 system with 4C, QUEENS, and a few other software packages preinstalled. 
 
 ## Prerequisites
 

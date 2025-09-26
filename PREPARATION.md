@@ -59,7 +59,7 @@ After receiving the repository locally,
 The following software must be installed on your machine:
 
 - Docker to run 4C and QUEENS (Note: his might require root access)
-- ParaView to inspect 4C simulation results
+- ParaView to inspect 4C simulation results (Download [here](https://www.paraview.org/download/).)
 - A text editor or integated development environment (IDE) of your choice to modify input files and scripts
 
 ### Geeting the tutorial materials

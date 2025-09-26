@@ -48,6 +48,8 @@ where `/path/to/tutorial-material` is the path on your computer where you downlo
 
 Additionally, you should have paraview on your computer.
 
+> **Note:** The docker container only ships 4C and its dependencies. It does not contain QUEENS.
+
 ## License
 
 While for most of the software installed in the virtual machine, their own licenses exist, 

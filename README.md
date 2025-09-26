@@ -30,7 +30,9 @@ This tutorial emphasizes practical experience and active participation. Over two
 
 ## Getting Started
 
-A pre-configured virtual machine with all required software will be provided. Participants are asked to download the image of the virtual machince to their machines prior to the workshop. Setup instructions will be provided during the introductory session.
+A pre-configured virtual machine with all required software will be provided.
+Participants are asked to download the image of the virtual machince to their machines prior to the workshop. 
+Please see the preparatory steps described in [PREPARATION.md](PREPARATION.md) to set up the virtual machine.
 
 ---
 

@@ -48,7 +48,7 @@ $CMAKE_COMMAND \
   -DTPL_ENABLE_LAPACKLIB=ON \
   \
   -DTPL_PARMETIS_INCLUDE_DIRS="/usr/include" \
-  -DTPL_PARMETIS_LIBRARIES="/usr/lib/libparmetis.so.4.0.3;/usr/lib/x86_64-linux-gnu/libmetis.so.5.1.0" \
+  -DTPL_PARMETIS_LIBRARIES="/usr/lib/libparmetis.so.4.0.3;" \
   \
   -DBUILD_SHARED_LIBS=ON \
   -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \

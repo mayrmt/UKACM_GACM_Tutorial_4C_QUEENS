@@ -13,6 +13,8 @@ After completion of this tutorial, you will know
 - how to solve the arising linear system with direct and iterative solvers;
 - how to interpret the results (pressure wave propagation in an elastic tube).
 
+Therefore, the tutorial will guide you through the process of creating a 4C input file from scratch. For comparison, a working input file `solution.4C.yaml` is part of this tutorial, though it is highly recommended to only consult it in case of severe difficutlties.
+
 ## Problem description
 
 The system consists of a straight, thin-walled solid tube (length $\ell = 5 cm$, outer radius $r_o = 0.6 cm$, inner radius $r_i = 0.5 cm$) that is filled with fluid. The solid tube is fully clamped at both ends. Both solid and fluid are initially at rest.

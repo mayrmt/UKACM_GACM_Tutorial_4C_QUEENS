@@ -86,10 +86,27 @@ To clone the repository to your machine, open a terminal and navigate to a direc
 
 To download and run the pre-compiled docker container for the 4C tutorial, follow the instructions for your operating system:
 
-- **MacOS / Linux / Windows Subsystem for Linux:** Open a terminal and navigate into the top level directory of the tutorial repository. Then, start the docker container as follows:
+- **MacOS / Linux:** Open a terminal and navigate into the top level directory of the tutorial repository. Then, start the docker container as follows:
+
    ```bash
    docker run -i -t -v `pwd`:/home/user/tutorial ghcr.io/4c-multiphysics/4c-minimal:latest /bin/bash
    ```
-   When you execute this command for the first time, this will download the docker container from the internet. It will then start the container and open a `bash` shell. You will find yourself in the home director of the user `user` with two directories, `4C` (pre-installed 4C executable) and `tutorial` (tutorial files on your machine that you have cloned in the previous step).
 
-- **Windows:** :warning: Georg, please fill in the details!
+   When you execute this command for the first time, this will download the docker container from the internet. It will then start the container and open a `bash` shell. You will find yourself in the `home/` directory of the user `user` with two directories, `4C` (pre-installed 4C executable) and `tutorial` (mount point of the tutorial files on your machine that you have cloned in the previous step).
+
+- **Windows:** On Windows, there are two options to get access to the docker container. Both options require admin rights for installation, so please make sure to have one of the solutions available when starting the tutorials:
+
+   - **Windows Subsystem for Linux (wsl):** Please refer to [this documentation](https://learn.microsoft.com/en-us/windows/wsl/install) how to setup wsl. Switch to WSL 2 as described in the provided link. Then, follow the instructions for Linux (see above).
+
+   - **Docker Desktop:** You may install it via the Microsoft Store of your system. Start the Docker Desktop app.
+
+      To download and run the provided docker container,
+
+      1. know the `C:\path\to\top\level\directory\tutorial\repo`
+      2. Insert this path into the following command and execute it in the Command Prompt:
+
+      ```bash
+      docker run -i -t -v "C:\path\to\top\level\directory\tutorial\repo":/home/user/tutorial ghcr.io/4c-multiphysics/4c-minimal:latest /bin/bash
+      ```
+
+		This mounts the repository folder from your Windows environment into the docker container under `/home/user/tutorial`. You can edit the files in the tutorial repository in your Windows environment, but they will also be available to the docker container. Within the docker container, you will run the simulations in the Linux environment. Output can be written back to the Windows system for further inspection.

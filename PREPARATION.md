@@ -10,11 +10,14 @@ However, if you prefer to use a docker container instead of the virtual machine,
 you may do so, but no support will be provided on how to install and use docker.
 Some information is given [below](#docker).
 
-The VM applicance is a virtual Ubuntu 24.04 system with 4C, QUEENS, and a few other software packages preinstalled. 
+The VM applicance is a virtual Ubuntu 24.04 system with 4C and a few other software packages preinstalled. 
 
 ## Prerequisites
 
-On the hardware side it is beneficial to have a powerful computer with at least 4 physical cores (better 8) and 16 GB RAM, 
+This VM can be installed on any x86_64 architecture. 
+The installation to computers with ARM processors appears to be problematic.
+
+It is beneficial to have a powerful computer with at least 4 physical cores (better 8 or more) and 16 GB RAM, 
 and 50 GB free space on the hard disk.
 
 The only software needed here is Oracle virtualBox (in the following denoted as VB). 
@@ -23,32 +26,40 @@ If you don't have it already, please download VB from https://www.virtualbox.org
 
 ## Installation
 
-The virtual machine appliance is the file [`4C_linux.ova`](https://hereon-my.sharepoint.com/:f:/g/personal/ingo_scheider_hereon_de/Es_VRBHDVhJAua4KcDG5-n0BaeOgq5yWBU9k4IBmtPZ63A?e=KakAVC). 
-Note that the size of the file is more than 12 Gb, so the download should be done with a solid and fast connection.
+The virtual machine appliance is the file [`4C_linux.ova`](https://hereon-my.sharepoint.com/:u:/g/personal/ingo_scheider_hereon_de/Efkhgd6WdvxJmUbfJl4vGCoBvmIm5NaVAXzInRCSCxVpNw?e=DGGnzF). 
+Note that the size of the file is about 12 Gb, so the download should be done with a solid and fast connection.
 
 After receiving the repository locally, 
 1. start VB, 
 1. import the appliance into VB, 
-1. adjust the setting to memory and number of cpus, which fits to your hardware environment, 
+1. adjust the setting to memory and number of cpus, which fits to your hardware environment 
+   (note that the VM should have at least 16 GB RAM and 4 CPUs assigned),
 1. start the VM
-1. Click on the username `participant`. When asked for credentials, type `4C.workshop` 
+1. You should not be asked for a username/password. 
+   In case you are, click on the username `participant`. If asked for credentials, type `4C.workshop`
+2. After the VM has started, please open a terminal window (you'll find the terminal icon on the left icon bar of the main window).
+3. Download the repository with the tutorial material by typing the command
+   ```
+   git clone https://github.com/mayrmt/UKACM_GACM_Tutorial_4C_QUEENS.git
+   ```
+
 
 ## Docker
 
-If you prefer docker instead, you may get the docker container using the command
+If you prefer docker instead or have a computer based on ARM architecture, you may get the docker container using the command
 
 ```
 docker pull ghcr.io/4c-multiphysics/4c:main
 ```
-
 When running the docker container, you should still download the repository with the tutorial material to your computer,
 and mount it into the docker container, e.g., using 
-```docker run -it -v /path/to/tutorial-material:/home/participant/tutorial-material ghcr.io/4c-multiphysics/4c:main /bin/bash```
+```docker run -it -v /path/to/tutorial-material:/home/user/tutorial-material ghcr.io/4c-multiphysics/4c:main /bin/bash```
 where `/path/to/tutorial-material` is the path on your computer where you downloaded the tutorial material.
 
-Additionally, you should have paraview on your computer.
+Additionally, you should have paraview on your computer. Since the directory with tutorial material is mounted into the docker container, 
+you can use paraview on your computer to visualize results computed in the docker container.
 
-> **Note:** The docker container only ships 4C and its dependencies. It does not contain QUEENS.
+> **Note:** The docker container only ships 4C and its dependencies. It does not contain QUEENS nor any conda installation.
 
 ## License
 

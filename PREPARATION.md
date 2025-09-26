@@ -4,15 +4,23 @@ This document describes the preparatory steps necessary to participate in the 4C
 It is recommended to go through these steps at least one day before the tutorial starts,
 so that any issues can be resolved in time.
 
-For the workshop it is not necessary to install 4C and QUEENS on your own computer,
-as a virtual machine appliance is provided, which contains all necessary software.
-However, if you prefer to use a docker container instead of the virtual machine,
-you may do so, but no support will be provided on how to install and use docker.
-Some information is given [below](#docker).
+For the workshop, it is not necessary to install 4C and QUEENS on your own computer. Different software containers with the necessary software already pre-installed are provided (virtual machine appliance, docker container).
 
-The VM applicance is a virtual Ubuntu 24.04 system with 4C and a few other software packages preinstalled. 
+The choice between a virtual machine or docker containers is either based on personal preference or might be dictated by you hardware specifications.
 
-## Prerequisites
+- The **virtual machine** only works for `x86_64` architectures.
+- Participants with **arm** architecture, e.g. Mac users with Apple Silicon, must resort to the docker container.
+
+> We cannot provide support during the workshop on the installation of virtual machine frameworks or docker. Please test it in advance.
+
+This document describes both scenarios:
+
+- [Virtual machine](#virtual-machine)
+- [Docker container](#docker-container)
+
+## Virtual machine
+
+### Prerequisites
 
 This VM can be installed on any x86_64 architecture. 
 The installation to computers with ARM processors appears to be problematic.
@@ -24,7 +32,7 @@ The only software needed here is Oracle virtualBox (in the following denoted as 
 The VB version tested is 7.1.
 If you don't have it already, please download VB from https://www.virtualbox.org/wiki/Downloads and install it on your computer.
 
-## Installation
+### Installation
 
 The virtual machine appliance is the file [`4C_linux.ova`](https://hereon-my.sharepoint.com/:u:/g/personal/ingo_scheider_hereon_de/Efkhgd6WdvxJmUbfJl4vGCoBvmIm5NaVAXzInRCSCxVpNw?e=DGGnzF). 
 Note that the size of the file is about 12 Gb, so the download should be done with a solid and fast connection.
@@ -44,24 +52,44 @@ After receiving the repository locally,
    ```
 
 
-## Docker
+## Docker container
 
-If you prefer docker instead or have a computer based on ARM architecture, you may get the docker container using the command
+### Prerequesites
 
-```
-docker pull ghcr.io/4c-multiphysics/4c:main
-```
-When running the docker container, you should still download the repository with the tutorial material to your computer,
-and mount it into the docker container, e.g., using 
-```docker run -it -v /path/to/tutorial-material:/home/user/tutorial-material ghcr.io/4c-multiphysics/4c:main /bin/bash```
-where `/path/to/tutorial-material` is the path on your computer where you downloaded the tutorial material.
+The following software must be installed on your machine:
 
-Additionally, you should have paraview on your computer. Since the directory with tutorial material is mounted into the docker container, 
-you can use paraview on your computer to visualize results computed in the docker container.
+- Docker to run 4C and QUEENS (Note: his might require root access)
+- ParaView to inspect 4C simulation results
+- A text editor or integated development environment (IDE) of your choice to modify input files and scripts
 
-> **Note:** The docker container only ships 4C and its dependencies. It does not contain QUEENS nor any conda installation.
+### Geeting the tutorial materials
 
-## License
+The tutorial material is provided in a public [GitHub repository](https://github.com/mayrmt/UKACM_GACM_Tutorial_4C_QUEENS).
 
-While for most of the software installed in the virtual machine, their own licenses exist, 
-note that 4C is licensed by the GNU Lesser General Public License v3.0 or later.
+To clone the repository to your machine, open a terminal and navigate to a directory of your choice, where the data should be stored. Then clone the repository with one of these options:
+
+- If you have `git`, a GitHub account and `ssh` credentials on GitHub:
+   ```bash
+   git clone git@github.com:mayrmt/UKACM_GACM_Tutorial_4C_QUEENS.git
+   ```
+
+- If you have `git`, but no GitHub account:
+   ```bash
+   git clone https://github.com/mayrmt/UKACM_GACM_Tutorial_4C_QUEENS.git
+   ```
+
+- If you do not have `git` on your machine: _Open the [GitHub repository](https://github.com/mayrmt/UKACM_GACM_Tutorial_4C_QUEENS) in your browser. Then click the green `<> Code` button and select "Download ZIP" from the menu._
+   ![](fig/github_download_zip.png)
+  _Unpack/unzip the directory using the method of your choice._
+
+### Getting and running a docker container
+
+To download and run the pre-compiled docker container for the 4C tutorial, follow the instructions for your operating system:
+
+- **MacOS / Linux / Windows Subsystem for Linux:** Open a terminal and navigate into the top level directory of the tutorial repository. Then, start the docker container as follows:
+   ```bash
+   docker run -i -t -v `pwd`:/home/user/tutorial ghcr.io/4c-multiphysics/4c-minimal:latest /bin/bash
+   ```
+   When you execute this command for the first time, this will download the docker container from the internet. It will then start the container and open a `bash` shell. You will find yourself in the home director of the user `user` with two directories, `4C` (pre-installed 4C executable) and `tutorial` (tutorial files on your machine that you have cloned in the previous step).
+
+- **Windows:** :warning: Georg, please fill in the details!

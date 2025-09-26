@@ -478,11 +478,11 @@ You now should be able to obtain a visualization like the one in the section on 
 
 ## Further numerical experiments
 
-So far, we have just ran five time steps of the pressure wave example using a medium-sized mesh and direct solver for the linear system. We can now vary some parameters.
+So far, we have just run five time steps of the pressure wave example using a medium-sized mesh and direct solver for the linear system. We can now vary some parameters.
 
 ### Step 1: Switch to iterative solver
 
-We already have defined an iterative solver as `SOLVER 2` in the input file. Yet, it is not used so far. 
+An iterative solver, defined as `SOLVER 2` in the input file, has already been specified, but has not yet been use so far.
 
 To switch from the direct solver (`SOLVER 1`) to an iterative solver with multigrid preconditioning (`SOLVER 2`), we have to point the monolithic FSI configuration to `SOLVER 2`. This is achieved by setting `LINEAR_SOLVER: 2` in the `FSI DYNAMIC/MONOLITHIC SOLVER:` section of the input file.
 
@@ -814,14 +814,14 @@ Iter   2, [ 1] :    5.987033e-04
 
 ### Step 2: Switch to finer mesh
 
-So far, we have solved the FSI example on a mesh with 58333 degrees of freedom. To use a finer mesh with in total 187516 degrees of freedom (see [predefined mesh files](#predefined-mesh-files), we have to adapt the 4C input file and change the reference to the mesh file. For both `STRUCTURE GEOMETRY:` and `FLUID GEOMETRY:`, change the reference to the mesh file to `FILE: pw_m3.exo`.
+So far, we have solved the FSI example on a mesh with 58333 degrees of freedom. To use a finer mesh with a total of 187516 degrees of freedom (see [predefined mesh files](#predefined-mesh-files), we have to adapt the 4C input file and change the reference to the mesh file. For both `STRUCTURE GEOMETRY:` and `FLUID GEOMETRY:`, change the reference to the mesh file to `FILE: pw_m3.exo`.
 
 Now, change and save the intput file and re-run the simulation. What do you observe?
 
 <details>
 <summary>Solution</summary>
 
-Due to the increased problem size, the simulation takes more time, since more finite element need to be evaluated and more equations need to be solved.
+Due to the increased problem size, the simulation takes more time, since more finite elements need to be evaluated and the resulting linear system of equations grows in size.
 
 </details>
 

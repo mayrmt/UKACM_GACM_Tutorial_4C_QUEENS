@@ -1,0 +1,88 @@
+PROBLEM TYPE:
+  PROBLEMTYPE: Structure
+PROBLEM SIZE:
+  DIM: 3
+STRUCTURE GEOMETRY:
+  FILE: tutorial_contact_3d.e
+  SHOW_INFO: detailed_summary
+  ELEMENT_BLOCKS:
+    - ID: 1
+      SOLID:
+        HEX8:
+          MAT: 1
+          KINEM: nonlinear
+    - ID: 2
+      SOLID:
+        HEX8:
+          MAT: 2
+          KINEM: nonlinear
+STRUCTURAL DYNAMIC:
+  INT_STRATEGY: Standard
+  TIMESTEP: 1.0
+  NUMSTEP: 10
+  MAXTIME: 10.0
+  DYNAMICTYPE: GenAlpha
+  RESTARTEVERY: 10
+  TOLDISP: 1.0e-6
+  TOLRES: 1.0e-6
+  LINEAR_SOLVER: 1
+IO:
+  STRUCT_STRESS: Cauchy
+IO/RUNTIME VTK OUTPUT:
+  INTERVAL_STEPS: 1
+IO/RUNTIME VTK OUTPUT/STRUCTURE:
+  OUTPUT_STRUCTURE: true
+  DISPLACEMENT: true
+  STRESS_STRAIN: true
+  ELEMENT_MAT_ID: true
+MATERIALS:
+  - MAT: 1
+    MAT_Struct_StVenantKirchhoff:
+      YOUNG: 100
+      NUE: 0.3
+      DENS: 0.5
+  - MAT: 2
+    MAT_Struct_StVenantKirchhoff:
+      YOUNG: 4000
+      NUE: 0.3
+      DENS: 1
+SOLVER 1:
+  SOLVER: UMFPACK
+MORTAR COUPLING:
+  ALGORITHM: Mortar
+  LM_SHAPEFCN: Standard
+CONTACT DYNAMIC:
+  STRATEGY: Penalty
+  PENALTYPARAM: 1.0e2
+  LINEAR_SOLVER: 1
+FUNCT1:
+  - COMPONENT: 0
+    SYMBOLIC_FUNCTION_OF_SPACE_TIME: compression
+  - VARIABLE: 0
+    NAME: compression
+    TYPE: linearinterpolation
+    NUMPOINTS: 3
+    TIMES: [0, 8, 10]
+    VALUES: [0, 0.1, 0.1]
+DESIGN SURF MORTAR CONTACT CONDITIONS 3D:
+  - E: 1
+    ENTITY_TYPE: node_set_id
+    InterfaceID: 1
+    Side: Slave
+  - E: 2
+    ENTITY_TYPE: node_set_id
+    InterfaceID: 1
+    Side: Master
+DESIGN SURF DIRICH CONDITIONS:
+  - E: 3
+    ENTITY_TYPE: node_set_id
+    NUMDOF: 3
+    ONOFF: [1, 1, 1]
+    VAL: [0, 0, 0]
+    FUNCT: [null, null, null]
+  - E: 4
+    ENTITY_TYPE: node_set_id
+    NUMDOF: 3
+    ONOFF: [1, 0, 0]
+    VAL: [-1.0, 0.0, 0.0]
+    FUNCT: [1, null, null]

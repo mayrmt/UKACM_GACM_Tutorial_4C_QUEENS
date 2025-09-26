@@ -466,7 +466,12 @@ For FSI simulations, 4C writes simulation output in binary format. To view it in
 <path/to/build/directory>/post_ensight --file=<path/to/output>
 ```
 
-This will produce a series of files ready for inspection in ParaView.
+This will produce a series of files ready for inspection in ParaView. Therefore, open ParaView on your host machine. Then, open the two files ending with `*_fluid.case` and `*_structure.case`. This will load the results of the fluid and solid domain into ParaView. Now, you can inspect the solution in ParaView, apply filters, walk through the different time steps, etc.
+
+> **Visialization of deformations:** Both solid and fluid domain have computed displacement fields during the simulation. To visualize the deformation, you can
+>
+> - create a contour plot for each domain colored according to the displacement field of each domain;
+> - display the deformation of the geomtry by applying a "warp" filter. For better visibility, it is recommended to scale the deformation by a factor, e.g. 10 or 100.
 
 ## Visualization of results
 

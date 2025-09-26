@@ -1,6 +1,6 @@
 # Preparatory steps for the 4C and QUEENS workshop
 
-This document describes the preparatory steps necessary to participate in the 4C and QUEENS workshop during the UKACM-GACM autumn school 2024.
+This document describes the preparatory steps necessary to participate in the 4C and QUEENS workshop during the UKACM-GACM autumn school 2025.
 It is recommended to go through these steps at least one day before the tutorial starts,
 so that any issues can be resolved in time.
 

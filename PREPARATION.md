@@ -28,7 +28,7 @@ The installation to computers with ARM processors appears to be problematic.
 It is beneficial to have a powerful computer with at least 4 physical cores (better 8 or more) and 16 GB RAM, 
 and 50 GB free space on the hard disk.
 
-The only software needed here is Oracle virtualBox (in the following denoted as VB). 
+The only software needed here is Oracle VirtualBox (in the following denoted as VB).
 The VB version tested is 7.1.
 If you don't have it already, please download VB from https://www.virtualbox.org/wiki/Downloads and install it on your computer.
 
@@ -40,7 +40,7 @@ Note that the size of the file is about 12 Gb, so the download should be done wi
 After receiving the repository locally, 
 1. start VB, 
 1. import the appliance into VB, 
-1. adjust the setting to memory and number of cpus, which fits to your hardware environment 
+1. adjust the setting to memory and number of CPUs, which fits to your hardware environment
    (note that the VM should have at least 16 GB RAM and 4 CPUs assigned),
 1. start the VM
 1. You should not be asked for a username/password. 
@@ -54,15 +54,15 @@ After receiving the repository locally,
 
 ## Docker container
 
-### Prerequesites
+### Prerequisites
 
 The following software must be installed on your machine:
 
-- Docker to run 4C and QUEENS (Note: his might require root access)
+- Docker to run 4C and QUEENS (Note: this might require root access)
 - ParaView to inspect 4C simulation results (Download [here](https://www.paraview.org/download/).)
-- A text editor or integated development environment (IDE) of your choice to modify input files and scripts
+- A text editor or integrated development environment (IDE) of your choice to modify input files and scripts.
 
-### Geeting the tutorial materials
+### Getting the tutorial materials
 
 The tutorial material is provided in a public [GitHub repository](https://github.com/mayrmt/UKACM_GACM_Tutorial_4C_QUEENS).
 

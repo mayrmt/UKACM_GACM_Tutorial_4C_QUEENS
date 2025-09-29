@@ -6,7 +6,7 @@ so that any issues can be resolved in time.
 
 For the workshop, it is not necessary to install 4C and QUEENS on your own computer. Different software containers with the necessary software already pre-installed are provided (virtual machine appliance, docker container).
 
-The choice between a virtual machine or docker containers is either based on personal preference or might be dictated by you hardware specifications.
+The choice between a virtual machine or docker containers is either based on personal preference or might be determined by your available hardware.
 
 - The **virtual machine** only works for `x86_64` architectures.
 - Participants with **arm** architecture, e.g. Mac users with Apple Silicon, must resort to the docker container.

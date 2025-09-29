@@ -56,6 +56,6 @@ jupyter notebook
 
 This should open a page in the web browser. Open the tutorials under
 ```
-/home/participant/UKACM_GACM_Tutorial_4C_QUEENS/QUEENS/0-setup/0-setup.ipynb
+/home/participant/UKACM_GACM_Tutorial_4C_QUEENS/QUEENS/1-grid-iterator-rosenbrock/1-grid-iterator-rosenbrock.ipynb
 ```
 

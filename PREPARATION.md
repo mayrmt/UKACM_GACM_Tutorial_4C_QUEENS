@@ -8,8 +8,8 @@ For the workshop, it is not necessary to install 4C and QUEENS on your own compu
 
 The choice between a virtual machine or docker containers is either based on personal preference or might be determined by your available hardware.
 
-- The [Virtual machine](#virtual-machine) only works for `x86_64` architectures.
-- Participants with `arm` architecture, e.g. Mac users with Apple Silicon, must resort to the [Docker container](#docker-container).
+- The [virtual machine](#virtual-machine) only works for `x86_64` architectures.
+- Participants with `arm` architecture, e.g. Mac users with Apple Silicon, must resort to the [docker container](#docker-container).
 
 > We cannot provide support during the workshop on the installation of virtual machine frameworks or docker. Please test it in advance.
 

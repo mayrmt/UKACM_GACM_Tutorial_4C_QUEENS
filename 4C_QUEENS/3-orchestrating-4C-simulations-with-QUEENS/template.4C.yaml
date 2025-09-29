@@ -47,7 +47,7 @@ DESIGN SURF DIRICH CONDITIONS:
     VAL: [0, 0, 0.55]
     FUNCT: [null, null, null]
 STRUCTURE GEOMETRY:
-  FILE: /home/participant/UKACM_GACM_Tutorial_4C_QUEENS/3-orchestrating-4C-simulations-with-QUEENS/beam_coarse.exo
+  FILE: /home/participant/UKACM_GACM_Tutorial_4C_QUEENS/4C_QUEENS/3-orchestrating-4C-simulations-with-QUEENS/beam_coarse.exo
   ELEMENT_BLOCKS:
     - ID: 1
       SOLID:

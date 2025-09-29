@@ -88,7 +88,7 @@ DESIGN SURF DIRICH CONDITIONS:
     VAL: [0, 0, 0]
     FUNCT: [0, 0, 0]
 STRUCTURE GEOMETRY:
-  FILE: /home/participant/UKACM_GACM_Tutorial_4C_QUEENS/4-quantifying-uncertainty-due-to-heterogeneous_material_fields/membrane_20.e
+  FILE: /home/participant/UKACM_GACM_Tutorial_4C_QUEENS/4C_QUEENS/4-quantifying-uncertainty-due-to-heterogeneous_material_fields/membrane_20.e
   SHOW_INFO: none
   ELEMENT_BLOCKS:
     - ID: 1

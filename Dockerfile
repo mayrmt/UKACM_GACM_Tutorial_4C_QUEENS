@@ -5,7 +5,7 @@ USER root
 
 # Install wget to fetch Miniconda
 RUN apt-get update && \
-    apt-get install -y wget libgl1-mesa-dev xvfb &&\
+    apt-get install -y wget libgl1-mesa-dev xvfb rsync &&\
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

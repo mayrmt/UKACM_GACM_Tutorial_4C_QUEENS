@@ -19,7 +19,7 @@ def poisson_pde(source_x, source_y, source_term):
         # Source term
         return source_term(w.x[0], w.x[1], source_x, source_y) * v
 
-    # Stiffnes matrix
+    # Stiffness matrix
     A = laplace.assemble(basis)
 
     # Right-hand side

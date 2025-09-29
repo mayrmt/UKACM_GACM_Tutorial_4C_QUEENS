@@ -1,5 +1,5 @@
 # Get the docker image from 4C
-FROM ghcr.io/4c-multiphysics/4c:main
+FROM ghcr.io/4c-multiphysics/4c:latest
 
 USER root
 

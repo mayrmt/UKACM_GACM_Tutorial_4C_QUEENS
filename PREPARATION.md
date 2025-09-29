@@ -34,7 +34,7 @@ If you don't have it already, please download VB from https://www.virtualbox.org
 
 ### Installation
 
-The virtual machine appliance is the file [`4C_linux.ova`](https://hereon-my.sharepoint.com/:u:/g/personal/ingo_scheider_hereon_de/Efkhgd6WdvxJmUbfJl4vGCoBvmIm5NaVAXzInRCSCxVpNw?e=DGGnzF). 
+The virtual machine appliance is the file [`4C_ukacm_gacm.ova`](https://gigamove.rwth-aachen.de/en/download/bd4f4d2f3fb076e1a717eab7208e0765).
 Note that the size of the file is about 12 Gb, so the download should be done with a solid and fast connection.
 
 After receiving the repository locally, 
@@ -49,6 +49,32 @@ After receiving the repository locally,
 3. Download the repository with the tutorial material by typing the command
    ```
    git clone https://github.com/mayrmt/UKACM_GACM_Tutorial_4C_QUEENS.git
+   ```
+
+### Test 4C Executable within VM
+1. Navigate to build folder
+   ```bash
+   cd /home/participant/4C/build/release
+   ```
+1. Test exectution of one exemplary test file
+   ```bash
+   ctest -V -R ssi_mono_3D_6hex8_elch_s2i_butlervolmer.4C.yaml-p3
+   ```
+   if the output looks like:
+   ```bash
+   100% tests passed, 0 tests failed out of 2
+   ```
+   &rarr; You're finished!
+
+   in case of failure, you should try the following steps:
+
+1. Reconfigure the code using:
+   ```bash
+   cmake --fresh --preset=release ../../
+   ```
+1. Rebuild the 4C executable using:
+   ```bash
+   ninja full
    ```
 
 

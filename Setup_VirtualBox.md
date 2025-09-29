@@ -14,7 +14,7 @@ The tutorials can now be found in `/home/participant/UKACM_GACM_Tutorial_4C_QUEE
 
 ## QUEENS
 
-For the QUEENS tutorials, we need to create a Python enviroment with QUEENS install in it.
+For the QUEENS tutorials, we need to create a Python environment with QUEENS installed in it.
 
 ## 1. Create a Python environment
 Create a conda environment using:

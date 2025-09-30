@@ -205,7 +205,6 @@ MATERIALS:
     MAT_fluid:
       DYNVISCOSITY: 0.03
       DENSITY: 1
-      GAMMA: 1
   - MAT: 2
     MAT_Struct_StVenantKirchhoff:
       YOUNG: 3e+6

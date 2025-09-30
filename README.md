@@ -13,6 +13,14 @@ Welcome to the two-day tutorial on advanced multiphysics simulation and analysis
 
 ---
 
+## Modus operandi
+
+This tutorial will be delivered via Zoom. To enable active participation, all attendees will be assigned into breakout rooms where they can work on the tutorial assignments in small groups. This should give ample opportunity to network and to discuss possible problems with colleagues.
+
+For further help, 4C & QUEENS experts are present. Just raise a virtual hand inside the breakout room and an expert will join you shortly to discuss any questions.
+
+---
+
 ## What to Expect
 
 This tutorial emphasizes practical experience and active participation. Over two days, participants will:

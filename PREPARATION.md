@@ -155,7 +155,7 @@ On Windows, there are two options to get access to the docker container. Both op
 1. Start the docker via:
 
     ```bash
-    docker run -it -p 8888:8888 ukacm_gacm
+    docker run -it -p 8888:8888 8787:8787 ukacm_gacm
     ```
 
 1. In the docker shell run
@@ -174,7 +174,7 @@ On Windows, there are two options to get access to the docker container. Both op
             http://127.0.0.1:8888/tree?token=0d21235e0e799e5242e2e08800992e49830c18f379f6d38c
     ```
 
-1. Open the last link in your web browser.
+1. Open the last link of the message you got in your web browser.
 
 1. Open a notebook: In the file browser panel, locate the .ipynb file and double-click it. You can find them in the notebook files corresponding subfolder. The notebook will open in a new tab.
 

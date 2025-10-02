@@ -3,7 +3,6 @@
 
 **Date:** 30.09.2025 - 01.10.2025</br>
 **Organizers:** [S. Brandstaeter](https://github.com/sbrandstaeter), [G. Hammerl](https://github.com/georghammerl), [M. Mayr](https://github.com/mayrmt), [G. Robalo Rei](https://github.com/gilrrei), [I. Scheider](https://github.com/ischeider), [C. P. Schmidt](c-p-schmidt)
-### **Location:** [Zoom (Meeting-ID: 647 2286 8182 | Passcode: 409537)](https://unibw.zoom-x.de/j/64722868182?pwd=V4bEWtP43aJy9NOx2TfkdPbwMuebqY.1) </br>
 
 ---
 

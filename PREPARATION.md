@@ -155,7 +155,7 @@ On Windows, there are two options to get access to the docker container. Both op
 1. Start the docker via:
 
     ```bash
-    docker run -it -p 8888:8888 8787:8787 ukacm_gacm
+    docker run -it -p 8888:8888 -p 8787:8787 ukacm_gacm
     ```
 
 1. In the docker shell run
